@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>초4 국어 어휘 1일차 AI 학습</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Apple SD Gothic Neo','Noto Sans KR',sans-serif;background:#f7f6f3;color:#1a1a1a;min-height:100vh}
+.app{max-width:440px;margin:0 auto;padding:0 0 60px}
+.hero{background:#1a1a1a;color:#fff;padding:28px 20px 24px;text-align:center}
+.hero-badge{display:inline-block;background:#4CAF50;color:#fff;font-size:11px;font-weight:700;padding:4px 12px;border-radius:20px;margin-bottom:12px;letter-spacing:.5px}
+.hero h1{font-size:20px;font-weight:700;line-height:1.4;margin-bottom:6px}
+.hero p{font-size:12px;color:#aaa;line-height:1.6}
+.steps{display:flex;align-items:center;justify-content:center;padding:20px 20px 0}
+.step-item{display:flex;flex-direction:column;align-items:center;gap:4px;flex:1}
+.step-circle{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;border:2px solid #ebebeb;background:#fff;color:#ccc;transition:all .3s}
+.step-circle.active{background:#1a1a1a;color:#fff;border-color:#1a1a1a}
+.step-circle.done{background:#4CAF50;color:#fff;border-color:#4CAF50}
+.step-label{font-size:9px;color:#999;font-weight:500;text-align:center}
+.step-line{height:2px;flex:1;background:#ebebeb;margin-bottom:20px}
+.step-line.done{background:#4CAF50}
+.screen{display:none}.screen.active{display:block}
+.card-wrap{padding:20px}
+.q-card{background:#fff;border-radius:16px;padding:20px;border:1px solid #ebebeb;margin-bottom:14px}
+.q-num{font-size:11px;font-weight:700;color:#888;margin-bottom:8px;letter-spacing:.5px}
+.q-badge{display:inline-block;font-size:10px;padding:2px 8px;border-radius:10px;margin-bottom:10px;font-weight:600}
+.q-badge.concept{background:#e8f5e9;color:#2e7d32}
+.q-badge.apply{background:#e8f0fe;color:#1a56db}
+.q-text{font-size:15px;font-weight:600;line-height:1.6;margin-bottom:16px}
+.q-text .kw{color:#4CAF50;font-weight:700}
+.choices{display:flex;flex-direction:column;gap:8px}
+.choice{padding:12px 16px;border-radius:10px;border:1.5px solid #ebebeb;font-size:14px;cursor:pointer;background:#fff;text-align:left;transition:all .15s;line-height:1.5}
+.choice:hover:not(:disabled){border-color:#1a1a1a;background:#f7f6f3}
+.choice.correct{border-color:#4CAF50;background:#f0fdf4;color:#2e7d32;font-weight:600}
+.choice.wrong{border-color:#e02424;background:#fff5f5;color:#e02424}
+.feedback-box{margin-top:12px;padding:12px 14px;border-radius:10px;font-size:13px;line-height:1.6}
+.feedback-box.ok{background:#f0fdf4;color:#2e7d32}
+.feedback-box.ng{background:#fff5f5;color:#e02424}
+.write-card{background:#fff;border-radius:16px;padding:20px;border:1px solid #ebebeb;margin-bottom:14px}
+.write-mission{background:#f3e5f5;border-radius:10px;padding:12px 14px;margin-bottom:16px}
+.write-mission .mlabel{font-size:10px;font-weight:700;color:#7b1fa2;letter-spacing:.5px;margin-bottom:4px}
+.write-mission .mtext{font-size:13px;color:#4a148c;line-height:1.6}
+.word-big{font-size:26px;font-weight:700;text-align:center;margin-bottom:4px}
+.word-hint{font-size:12px;color:#999;text-align:center;margin-bottom:16px}
+.write-input{width:100%;padding:14px;border-radius:10px;border:1.5px solid #ebebeb;font-size:14px;font-family:inherit;resize:none;outline:none;transition:border .15s;line-height:1.6;background:#f7f6f3}
+.write-input:focus{border-color:#4CAF50;background:#fff}
+.submit-done{background:#f0fdf4;border:1.5px solid #4CAF50;border-radius:14px;padding:20px;text-align:center;margin-top:12px}
+.submit-done .done-emoji{font-size:36px;margin-bottom:8px}
+.submit-done .done-title{font-size:16px;font-weight:700;color:#2e7d32;margin-bottom:6px}
+.submit-done .done-sub{font-size:13px;color:#555;line-height:1.7;margin-bottom:16px}
+.kakao-chat-btn{display:block;width:100%;padding:14px;border-radius:12px;background:#FEE500;color:#1a1a1a;font-size:15px;font-weight:700;text-align:center;text-decoration:none;border:none;cursor:pointer;margin-bottom:8px}
+.result-hero{background:#1a1a1a;color:#fff;border-radius:20px;padding:28px 20px;margin-bottom:16px;text-align:center}
+.result-pct{font-size:52px;font-weight:700;line-height:1;margin-bottom:6px}
+.result-pct span{font-size:20px;font-weight:400}
+.result-msg{font-size:14px;color:#aaa;margin-bottom:4px}
+.result-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px}
+.result-box{background:#fff;border-radius:14px;padding:14px;border:1px solid #ebebeb;text-align:center}
+.result-num{font-size:20px;font-weight:700;margin-bottom:4px}
+.result-label{font-size:10px;color:#888}
+.kakao-promo{background:#1a1a1a;border-radius:16px;padding:24px 20px;margin-bottom:16px;text-align:center}
+.kakao-promo .emoji{font-size:32px;margin-bottom:12px}
+.kakao-promo h3{font-size:17px;font-weight:700;color:#fff;margin-bottom:10px;line-height:1.5}
+.kakao-promo p{font-size:13px;color:#aaa;line-height:1.8;margin-bottom:18px}
+.kakao-promo p strong{color:#4CAF50}
+.kakao-btn{display:block;width:100%;padding:16px;border-radius:12px;background:#FEE500;color:#1a1a1a;font-size:15px;font-weight:700;text-align:center;text-decoration:none;border:none;cursor:pointer}
+.btn-primary{width:100%;padding:16px;border-radius:14px;background:#1a1a1a;color:#fff;font-size:15px;font-weight:600;border:none;cursor:pointer;margin-bottom:10px;transition:opacity .15s}
+.btn-primary:hover{opacity:.85}
+.btn-primary:disabled{opacity:.35;cursor:not-allowed}
+.nav-info{font-size:12px;color:#999;text-align:center;margin-bottom:8px}
+</style>
+</head>
+<body>
+<div class="app">
+<div class="hero">
+  <div class="hero-badge">📚 1일차 QR 학습</div>
+  <h1>초4 국어 어휘<br>AI 학습 체험</h1>
+  <p>개념 확인 + 활용 + 문장 만들기<br>선생님이 직접 피드백해줘요!</p>
+</div>
+<div class="steps">
+  <div class="step-item"><div class="step-circle active" id="sc1">1</div><div class="step-label">개념</div></div>
+  <div class="step-line" id="sl1"></div>
+  <div class="step-item"><div class="step-circle" id="sc2">2</div><div class="step-label">개념</div></div>
+  <div class="step-line" id="sl2"></div>
+  <div class="step-item"><div class="step-circle" id="sc3">3</div><div class="step-label">활용</div></div>
+  <div class="step-line" id="sl3"></div>
+  <div class="step-item"><div class="step-circle" id="sc4">4</div><div class="step-label">문장쓰기</div></div>
+  <div class="step-line" id="sl4"></div>
+  <div class="step-item"><div class="step-circle" id="sc5">🎯</div><div class="step-label">결과</div></div>
+</div>
+
+<div id="q1Screen" class="screen active">
+  <div class="card-wrap">
+    <div class="q-card">
+      <div class="q-num">문제 1 / 4</div>
+      <div class="q-badge concept">개념 확인</div>
+      <div class="q-text"><span class="kw">중심 생각</span>에 대한 설명으로 알맞은 것은?</div>
+      <div class="choices">
+        <button class="choice" onclick="checkQ(this,'q1',false,'q1fb','q1Next')">① 글에서 가장 긴 문장</button>
+        <button class="choice" onclick="checkQ(this,'q1',true,'q1fb','q1Next')">② 글쓴이가 가장 말하고 싶은 핵심 내용</button>
+        <button class="choice" onclick="checkQ(this,'q1',false,'q1fb','q1Next')">③ 글의 제목과 항상 같은 것</button>
+        <button class="choice" onclick="checkQ(this,'q1',false,'q1fb','q1Next')">④ 글에서 처음 나오는 문장</button>
+      </div>
+      <div id="q1fb"></div>
+    </div>
+    <div class="nav-info">문제를 풀고 다음으로 넘어가요</div>
+    <button class="btn-primary" id="q1Next" disabled onclick="goStep('q2Screen',2)">다음 문제 →</button>
+  </div>
+</div>
+
+<div id="q2Screen" class="screen">
+  <div class="card-wrap">
+    <div class="q-card">
+      <div class="q-num">문제 2 / 4</div>
+      <div class="q-badge concept">개념 확인</div>
+      <div class="q-text"><span class="kw">문단</span>에 대한 설명으로 알맞은 것은?</div>
+      <div class="choices">
+        <button class="choice" onclick="checkQ(this,'q2',false,'q2fb','q2Next')">① 글에서 한 개의 문장</button>
+        <button class="choice" onclick="checkQ(this,'q2',false,'q2fb','q2Next')">② 낱말이 모인 것</button>
+        <button class="choice" onclick="checkQ(this,'q2',true,'q2fb','q2Next')">③ 글을 이루는 하나의 토막</button>
+        <button class="choice" onclick="checkQ(this,'q2',false,'q2fb','q2Next')">④ 글의 이름</button>
+      </div>
+      <div id="q2fb"></div>
+    </div>
+    <div class="nav-info">잘하고 있어요! 💪</div>
+    <button class="btn-primary" id="q2Next" disabled onclick="goStep('q3Screen',3)">다음 문제 →</button>
+  </div>
+</div>
+
+<div id="q3Screen" class="screen">
+  <div class="card-wrap">
+    <div class="q-card">
+      <div class="q-num">문제 3 / 4</div>
+      <div class="q-badge apply">활용 문제</div>
+      <div class="q-text">책의 ___을 보면 어떤 내용인지 짐작할 수 있어요.<br><span style="font-size:12px;color:#888">빈칸에 알맞은 말은?</span></div>
+      <div class="choices">
+        <button class="choice" onclick="checkQ(this,'q3',false,'q3fb','q3Next')">① 문장</button>
+        <button class="choice" onclick="checkQ(this,'q3',true,'q3fb','q3Next')">② 제목</button>
+        <button class="choice" onclick="checkQ(this,'q3',false,'q3fb','q3Next')">③ 낱말</button>
+        <button class="choice" onclick="checkQ(this,'q3',false,'q3fb','q3Next')">④ 뜻</button>
+      </div>
+      <div id="q3fb"></div>
+    </div>
+    <div class="nav-info">마지막! 문장 만들기예요 ✍️</div>
+    <button class="btn-primary" id="q3Next" disabled onclick="goStep('s1Screen',4)">문장 만들기 →</button>
+  </div>
+</div>
+
+<div id="s1Screen" class="screen">
+  <div class="card-wrap">
+    <div class="write-card">
+      <div class="write-mission">
+        <div class="mlabel">✍️ 문장 만들기 미션</div>
+        <div class="mtext">"<b>중심 생각</b>"을 사용해서<br>문장을 만들어봐요! 어떤 문장이든 OK 😊</div>
+      </div>
+      <div class="word-big">중심 생각</div>
+      <div class="word-hint">예) 이 글의 중심 생각은...</div>
+      <textarea class="write-input" id="s1Input" rows="4" placeholder="중심 생각을 넣어서 문장을 써봐요..." oninput="checkWriteInput()"></textarea>
+      <div id="s1Done"></div>
+    </div>
+    <button class="btn-primary" id="s1Submit" disabled onclick="submitWrite()">제출하기 →</button>
+  </div>
+</div>
+
+<div id="resultScreen" class="screen">
+  <div class="card-wrap" id="resultContent"></div>
+</div>
+</div>
+
+<script>
+const KAKAO_CHAT="https://pf.kakao.com/_sVUKX/chat";
+let scores={q1:0,q2:0,q3:0};
+let writtenSentence='';
+
+const qData={
+  q1:{ok:'정답이에요! 🎉 중심 생각은 글쓴이가 가장 말하고 싶은 핵심 내용이에요.',ng:'아쉬워요! 중심 생각은 "글쓴이가 가장 말하고 싶은 핵심 내용"이에요.',ans:'② 글쓴이가 가장 말하고 싶은 핵심 내용'},
+  q2:{ok:'정답이에요! 🎉 문단은 글을 이루는 하나의 토막이에요.',ng:'아쉬워요! 문단은 "글을 이루는 하나의 토막"이에요.',ans:'③ 글을 이루는 하나의 토막'},
+  q3:{ok:'정답이에요! 🎉 책의 제목을 보면 내용을 짐작할 수 있어요.',ng:'아쉬워요! 책의 "제목"을 보면 내용을 짐작할 수 있어요.',ans:'② 제목'}
+};
+
+function updateSteps(current){
+  for(let i=1;i<=5;i++){
+    const c=document.getElementById('sc'+i);
+    if(!c)continue;
+    if(i<current){c.className='step-circle done';if(i<5)c.textContent='✓'}
+    else if(i===current)c.className='step-circle active';
+    else c.className='step-circle';
+  }
+  for(let i=1;i<=4;i++){
+    const l=document.getElementById('sl'+i);
+    if(l)l.className='step-line'+(i<current?' done':'');
+  }
+}
+
+function goStep(screenId,stepNum){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById(screenId).classList.add('active');
+  updateSteps(stepNum);
+  window.scrollTo(0,0);
+}
+
+function checkQ(btn,qid,correct,fbId,nextId){
+  const screen=btn.closest('.card-wrap');
+  screen.querySelectorAll('.choice').forEach(b=>b.disabled=true);
+  const d=qData[qid];
+  if(correct){
+    btn.classList.add('correct');
+    document.getElementById(fbId).innerHTML=`<div class="feedback-box ok">${d.ok}</div>`;
+    scores[qid]=1;
+  }else{
+    btn.classList.add('wrong');
+    screen.querySelectorAll('.choice').forEach(b=>{if(b.textContent===d.ans)b.classList.add('correct')});
+    document.getElementById(fbId).innerHTML=`<div class="feedback-box ng">${d.ng}</div>`;
+  }
+  document.getElementById(nextId).disabled=false;
+}
+
+function checkWriteInput(){
+  const val=document.getElementById('s1Input').value.trim();
+  document.getElementById('s1Submit').disabled=val.length<2;
+  writtenSentence=val;
+}
+
+function submitWrite(){
+  const sentence=document.getElementById('s1Input').value.trim();
+  if(!sentence)return;
+  writtenSentence=sentence;
+  document.getElementById('s1Input').disabled=true;
+  document.getElementById('s1Submit').style.display='none';
+  const msg=`[1일차 문장 만들기]\n"중심 생각"으로 만든 문장:\n${sentence}`;
+  const kakaoUrl=`${KAKAO_CHAT}?text=${encodeURIComponent(msg)}`;
+  document.getElementById('s1Done').innerHTML=`
+    <div class="submit-done">
+      <div class="done-emoji">🌟</div>
+      <div class="done-title">잘했어요!</div>
+      <div class="done-sub">멋진 문장을 만들었어요 😊<br>선생님께 보내면 직접 피드백해드려요!</div>
+      <a class="kakao-chat-btn" href="${kakaoUrl}" target="_blank">💬 선생님께 보내기</a>
+    </div>`;
+  setTimeout(()=>showResult(), 300);
+}
+
+function showResult(){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById('resultScreen').classList.add('active');
+  updateSteps(5);window.scrollTo(0,0);
+  const qScore=scores.q1+scores.q2+scores.q3;
+  const pct=Math.round((qScore/3)*100);
+  const msg=pct===100?'완벽해요! 🌟':pct>=66?'잘했어요! 👍':'조금 더 연습해요 💪';
+  const kakaoMsg=`[1일차 문장 만들기]\n"중심 생각"으로 만든 문장:\n${writtenSentence}`;
+  const kakaoUrl=`${KAKAO_CHAT}?text=${encodeURIComponent(kakaoMsg)}`;
+  document.getElementById('resultContent').innerHTML=`
+    <div class="result-hero">
+      <div class="result-pct">${pct}<span>%</span></div>
+      <div class="result-msg">${msg}</div>
+    </div>
+    <div class="result-grid">
+      <div class="result-box"><div class="result-num" style="color:#4CAF50">${qScore}/3</div><div class="result-label">개념·활용</div></div>
+      <div class="result-box"><div class="result-num" style="color:#9b1c7d">✍️</div><div class="result-label">문장 제출완료</div></div>
+    </div>
+    <div class="submit-done" style="margin-bottom:16px">
+      <div class="done-emoji">💬</div>
+      <div class="done-title">선생님 피드백 받기</div>
+      <div class="done-sub">아직 안 보냈다면 지금 보내보세요!<br>선생님이 직접 확인하고 답장드려요 😊</div>
+      <a class="kakao-chat-btn" href="${kakaoUrl}" target="_blank">💬 선생님께 보내기</a>
+    </div>
+    <div class="kakao-promo">
+      <div class="emoji">🌱</div>
+      <h3>오늘도 잘했어요!<br>앱 출시를 기다려주세요</h3>
+      <p>매일 새로운 어휘와 독해 문제로<br><strong>실력을 쌓을 수 있는 앱</strong>이 곧 출시돼요!</p>
+      <a class="kakao-btn" href="https://pf.kakao.com/_sVUKX" target="_blank">📲 카카오채널 추가하기 💛</a>
+    </div>
+    <button class="btn-primary" onclick="location.reload()">다시 도전하기 🔄</button>`;
+}
+updateSteps(1);
+</script>
+</body>
+</html>
