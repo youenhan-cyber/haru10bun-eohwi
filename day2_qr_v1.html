@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>초4 국어 어휘 1일차 AI 학습</title>
+<title>초4 국어 어휘 2일차 AI 학습</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:'Apple SD Gothic Neo','Noto Sans KR',sans-serif;background:#f7f6f3;color:#1a1a1a;min-height:100vh}
@@ -12,7 +12,6 @@ body{font-family:'Apple SD Gothic Neo','Noto Sans KR',sans-serif;background:#f7f
 .hero-badge{display:inline-block;background:#4CAF50;color:#fff;font-size:11px;font-weight:700;padding:4px 12px;border-radius:20px;margin-bottom:12px;letter-spacing:.5px}
 .hero h1{font-size:20px;font-weight:700;line-height:1.4;margin-bottom:6px}
 .hero p{font-size:12px;color:#aaa;line-height:1.6}
-
 .steps{display:flex;align-items:center;justify-content:center;padding:20px 20px 0}
 .step-item{display:flex;flex-direction:column;align-items:center;gap:4px;flex:1}
 .step-circle{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;border:2px solid #ebebeb;background:#fff;color:#ccc;transition:all .3s}
@@ -21,11 +20,8 @@ body{font-family:'Apple SD Gothic Neo','Noto Sans KR',sans-serif;background:#f7f
 .step-label{font-size:9px;color:#999;font-weight:500;text-align:center}
 .step-line{height:2px;flex:1;background:#ebebeb;margin-bottom:20px}
 .step-line.done{background:#4CAF50}
-
 .screen{display:none}.screen.active{display:block}
 .card-wrap{padding:20px}
-
-/* 객관식 */
 .q-card{background:#fff;border-radius:16px;padding:20px;border:1px solid #ebebeb;margin-bottom:14px}
 .q-num{font-size:11px;font-weight:700;color:#888;margin-bottom:8px;letter-spacing:.5px}
 .q-badge{display:inline-block;font-size:10px;padding:2px 8px;border-radius:10px;margin-bottom:10px;font-weight:600}
@@ -33,7 +29,6 @@ body{font-family:'Apple SD Gothic Neo','Noto Sans KR',sans-serif;background:#f7f
 .q-badge.apply{background:#e8f0fe;color:#1a56db}
 .q-text{font-size:15px;font-weight:600;line-height:1.6;margin-bottom:16px}
 .q-text .kw{color:#4CAF50;font-weight:700}
-.q-text .blank{display:inline-block;border-bottom:2px solid #4CAF50;min-width:60px;text-align:center}
 .choices{display:flex;flex-direction:column;gap:8px}
 .choice{padding:12px 16px;border-radius:10px;border:1.5px solid #ebebeb;font-size:14px;cursor:pointer;background:#fff;text-align:left;transition:all .15s;line-height:1.5}
 .choice:hover:not(:disabled){border-color:#1a1a1a;background:#f7f6f3}
@@ -42,8 +37,6 @@ body{font-family:'Apple SD Gothic Neo','Noto Sans KR',sans-serif;background:#f7f
 .feedback-box{margin-top:12px;padding:12px 14px;border-radius:10px;font-size:13px;line-height:1.6}
 .feedback-box.ok{background:#f0fdf4;color:#2e7d32}
 .feedback-box.ng{background:#fff5f5;color:#e02424}
-
-/* 타이핑 */
 .type-card{background:#fff;border-radius:16px;padding:20px;border:1px solid #ebebeb;margin-bottom:14px}
 .type-mission{border-radius:10px;padding:12px 14px;margin-bottom:16px}
 .type-mission.green{background:#e8f5e9}
@@ -62,15 +55,11 @@ body{font-family:'Apple SD Gothic Neo','Noto Sans KR',sans-serif;background:#f7f
 .type-submit{width:100%;padding:12px;border-radius:10px;background:#1a1a1a;color:#fff;font-size:14px;font-weight:600;border:none;cursor:pointer;transition:opacity .15s}
 .type-submit:hover{opacity:.85}
 .type-submit:disabled{opacity:.35;cursor:not-allowed}
-
-/* AI 로딩 */
 .ai-loading{display:flex;align-items:center;gap:10px;padding:14px;background:#f7f6f3;border-radius:10px;margin-top:12px}
 .ai-dots span{display:inline-block;width:6px;height:6px;border-radius:50%;background:#4CAF50;margin:0 2px;animation:dot .9s infinite}
 .ai-dots span:nth-child(2){animation-delay:.2s}
 .ai-dots span:nth-child(3){animation-delay:.4s}
 @keyframes dot{0%,80%,100%{transform:scale(.6);opacity:.4}40%{transform:scale(1);opacity:1}}
-
-/* AI 피드백 */
 .ai-feedback{border-radius:14px;padding:16px;margin-top:12px;border:1.5px solid}
 .ai-feedback.great{background:#f0fdf4;border-color:#4CAF50}
 .ai-feedback.good{background:#fffbeb;border-color:#d97706}
@@ -86,8 +75,6 @@ body{font-family:'Apple SD Gothic Neo','Noto Sans KR',sans-serif;background:#f7f
 .ai-answer{background:rgba(255,255,255,.7);border-radius:8px;padding:10px 12px;font-size:12px;color:#555;line-height:1.6}
 .ai-answer strong{display:block;font-size:11px;color:#1a1a1a;margin-bottom:3px}
 .retry-btn{width:100%;padding:10px;border-radius:10px;border:1.5px solid #ebebeb;background:#fff;font-size:13px;color:#666;cursor:pointer;margin-top:8px}
-
-/* 결과 */
 .result-hero{background:#1a1a1a;color:#fff;border-radius:20px;padding:28px 20px;margin-bottom:16px;text-align:center}
 .result-pct{font-size:52px;font-weight:700;line-height:1;margin-bottom:6px}
 .result-pct span{font-size:20px;font-weight:400}
@@ -102,7 +89,6 @@ body{font-family:'Apple SD Gothic Neo','Noto Sans KR',sans-serif;background:#f7f
 .kakao-promo p{font-size:13px;color:#aaa;line-height:1.8;margin-bottom:18px}
 .kakao-promo p strong{color:#4CAF50}
 .kakao-btn{display:block;width:100%;padding:16px;border-radius:12px;background:#FEE500;color:#1a1a1a;font-size:15px;font-weight:700;text-align:center;text-decoration:none;border:none;cursor:pointer}
-
 .btn-primary{width:100%;padding:16px;border-radius:14px;background:#1a1a1a;color:#fff;font-size:15px;font-weight:600;border:none;cursor:pointer;margin-bottom:10px;transition:opacity .15s}
 .btn-primary:hover{opacity:.85}
 .btn-primary:disabled{opacity:.35;cursor:not-allowed}
@@ -113,7 +99,7 @@ body{font-family:'Apple SD Gothic Neo','Noto Sans KR',sans-serif;background:#f7f
 <div class="app">
 
 <div class="hero">
-  <div class="hero-badge">📚 1일차 QR 학습</div>
+  <div class="hero-badge">📚 2일차 QR 학습</div>
   <h1>초4 국어 어휘<br>AI 학습 체험</h1>
   <p>개념 확인 + 활용 + AI 글쓰기 채점<br>AI 선생님이 바로 피드백해줘요!</p>
 </div>
@@ -132,18 +118,18 @@ body{font-family:'Apple SD Gothic Neo','Noto Sans KR',sans-serif;background:#f7f
   <div class="step-item"><div class="step-circle" id="sc6">🎯</div><div class="step-label">결과</div></div>
 </div>
 
-<!-- Q1: 개념 1 -->
+<!-- Q1 -->
 <div id="q1Screen" class="screen active">
   <div class="card-wrap">
     <div class="q-card">
       <div class="q-num">문제 1 / 5</div>
       <div class="q-badge concept">개념 확인</div>
-      <div class="q-text"><span class="kw">중심 생각</span>에 대한 설명으로 알맞은 것은?</div>
+      <div class="q-text"><span class="kw">인물</span>에 대한 설명으로 알맞은 것은?</div>
       <div class="choices">
-        <button class="choice" onclick="checkQ(this,'q1',false,'q1fb','q1Next')">① 글에서 가장 긴 문장</button>
-        <button class="choice" onclick="checkQ(this,'q1',true,'q1fb','q1Next')">② 글쓴이가 가장 말하고 싶은 핵심 내용</button>
-        <button class="choice" onclick="checkQ(this,'q1',false,'q1fb','q1Next')">③ 글의 제목과 항상 같은 것</button>
-        <button class="choice" onclick="checkQ(this,'q1',false,'q1fb','q1Next')">④ 글에서 처음 나오는 문장</button>
+        <button class="choice" onclick="checkQ(this,'q1',false,'q1fb','q1Next')">① 이야기 속에서 일어나는 일</button>
+        <button class="choice" onclick="checkQ(this,'q1',false,'q1fb','q1Next')">② 이야기가 펼쳐지는 시간과 장소</button>
+        <button class="choice" onclick="checkQ(this,'q1',true,'q1fb','q1Next')">③ 이야기 속에 나오는 사람이나 동물</button>
+        <button class="choice" onclick="checkQ(this,'q1',false,'q1fb','q1Next')">④ 마음에 드는 생각이나 감정</button>
       </div>
       <div id="q1fb"></div>
     </div>
@@ -152,18 +138,18 @@ body{font-family:'Apple SD Gothic Neo','Noto Sans KR',sans-serif;background:#f7f
   </div>
 </div>
 
-<!-- Q2: 개념 2 -->
+<!-- Q2 -->
 <div id="q2Screen" class="screen">
   <div class="card-wrap">
     <div class="q-card">
       <div class="q-num">문제 2 / 5</div>
       <div class="q-badge concept">개념 확인</div>
-      <div class="q-text"><span class="kw">문단</span>에 대한 설명으로 알맞은 것은?</div>
+      <div class="q-text"><span class="kw">배경</span>에 대한 설명으로 알맞은 것은?</div>
       <div class="choices">
-        <button class="choice" onclick="checkQ(this,'q2',false,'q2fb','q2Next')">① 글에서 한 개의 문장</button>
-        <button class="choice" onclick="checkQ(this,'q2',false,'q2fb','q2Next')">② 낱말이 모인 것</button>
-        <button class="choice" onclick="checkQ(this,'q2',true,'q2fb','q2Next')">③ 글을 이루는 하나의 토막</button>
-        <button class="choice" onclick="checkQ(this,'q2',false,'q2fb','q2Next')">④ 글의 이름</button>
+        <button class="choice" onclick="checkQ(this,'q2',false,'q2fb','q2Next')">① 머릿속으로 떠올리는 마음이나 의견</button>
+        <button class="choice" onclick="checkQ(this,'q2',true,'q2fb','q2Next')">② 이야기가 펼쳐지는 때와 장소</button>
+        <button class="choice" onclick="checkQ(this,'q2',false,'q2fb','q2Next')">③ 일이 일어난 이유</button>
+        <button class="choice" onclick="checkQ(this,'q2',false,'q2fb','q2Next')">④ 차례대로 이어지는 흐름</button>
       </div>
       <div id="q2fb"></div>
     </div>
@@ -172,18 +158,18 @@ body{font-family:'Apple SD Gothic Neo','Noto Sans KR',sans-serif;background:#f7f
   </div>
 </div>
 
-<!-- Q3: 활용 -->
+<!-- Q3 활용 -->
 <div id="q3Screen" class="screen">
   <div class="card-wrap">
     <div class="q-card">
       <div class="q-num">문제 3 / 5</div>
       <div class="q-badge apply">활용 문제</div>
-      <div class="q-text">책의 <span class="blank">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>을 보면 어떤 내용인지 짐작할 수 있어요.</div>
+      <div class="q-text">이 이야기의 ___은 학교 운동장입니다.<br><span style="font-size:12px;color:#888">빈칸에 알맞은 말은?</span></div>
       <div class="choices">
-        <button class="choice" onclick="checkQ(this,'q3',false,'q3fb','q3Next')">① 문장</button>
-        <button class="choice" onclick="checkQ(this,'q3',true,'q3fb','q3Next')">② 제목</button>
-        <button class="choice" onclick="checkQ(this,'q3',false,'q3fb','q3Next')">③ 낱말</button>
-        <button class="choice" onclick="checkQ(this,'q3',false,'q3fb','q3Next')">④ 뜻</button>
+        <button class="choice" onclick="checkQ(this,'q3',false,'q3fb','q3Next')">① 인물</button>
+        <button class="choice" onclick="checkQ(this,'q3',false,'q3fb','q3Next')">② 사건</button>
+        <button class="choice" onclick="checkQ(this,'q3',true,'q3fb','q3Next')">③ 배경</button>
+        <button class="choice" onclick="checkQ(this,'q3',false,'q3fb','q3Next')">④ 느낌</button>
       </div>
       <div id="q3fb"></div>
     </div>
@@ -198,12 +184,12 @@ body{font-family:'Apple SD Gothic Neo','Noto Sans KR',sans-serif;background:#f7f
     <div class="type-card">
       <div class="type-mission green">
         <div class="mlabel">✍️ 뜻 쓰기 미션</div>
-        <div class="mtext">"<b>내용</b>"이 무슨 뜻인지 내 말로 써봐요!<br>짧아도 괜찮아요 😊</div>
+        <div class="mtext">"<b>까닭</b>"이 무슨 뜻인지 내 말로 써봐요!<br>짧아도 괜찮아요 😊</div>
       </div>
-      <div class="word-big">내용</div>
-      <div class="word-hint">힌트: 글이나 말 속에 담긴...</div>
+      <div class="word-big">까닭</div>
+      <div class="word-hint">힌트: 일이 일어난 이유...</div>
       <div class="type-wrap">
-        <textarea class="type-input" id="s1Input" rows="3" placeholder="예) 내용은 글 속에 담긴..." oninput="checkInput('s1Input','s1Submit')"></textarea>
+        <textarea class="type-input" id="s1Input" rows="3" placeholder="예) 까닭은 어떤 일이..." oninput="checkInput('s1Input','s1Submit')"></textarea>
         <button class="type-submit" id="s1Submit" disabled onclick="submitType(1)">AI 채점받기 🤖</button>
       </div>
       <div id="s1Feedback"></div>
@@ -218,12 +204,12 @@ body{font-family:'Apple SD Gothic Neo','Noto Sans KR',sans-serif;background:#f7f
     <div class="type-card">
       <div class="type-mission purple">
         <div class="mlabel">✍️ 문장 만들기 미션</div>
-        <div class="mtext">"<b>중심 생각</b>"을 사용해서<br>문장을 만들어봐요! 어떤 문장이든 OK 😊</div>
+        <div class="mtext">"<b>인물</b>"을 사용해서<br>문장을 만들어봐요! 어떤 문장이든 OK 😊</div>
       </div>
-      <div class="word-big">중심 생각</div>
-      <div class="word-hint">예) 이 글의 중심 생각은...</div>
+      <div class="word-big">인물</div>
+      <div class="word-hint">예) 이 이야기의 인물은...</div>
       <div class="type-wrap">
-        <textarea class="type-input" id="s2Input" rows="3" placeholder="중심 생각을 넣어서 문장을 써봐요..." oninput="checkInput('s2Input','s2Submit')"></textarea>
+        <textarea class="type-input" id="s2Input" rows="3" placeholder="인물을 넣어서 문장을 써봐요..." oninput="checkInput('s2Input','s2Submit')"></textarea>
         <button class="type-submit" id="s2Submit" disabled onclick="submitType(2)">AI 채점받기 🤖</button>
       </div>
       <div id="s2Feedback"></div>
@@ -244,30 +230,30 @@ const KAKAO="https://pf.kakao.com/_sVUKX";
 let scores={q1:0,q2:0,q3:0,s1:0,s2:0};
 
 const typeData={
-  1:{word:'내용',answer:'글이나 말 속에 담긴 것. 무슨 이야기인지를 뜻함',
-    prompt:`초등학교 4학년 국어 선생님이에요. 아이가 "내용"의 뜻을 설명한 것을 채점해주세요.
-정확한 뜻: "글이나 말 속에 담긴 것. 무슨 이야기인지를 뜻함"
+  1:{word:'까닭',answer:'일이 일어난 이유',
+    prompt:`초등학교 4학년 국어 선생님이에요. 아이가 "까닭"의 뜻을 설명한 것을 채점해주세요.
+정확한 뜻: "일이 일어난 이유"
 채점 기준:
 - 핵심 의미 포함 → "great" (⭐5점)
 - 일부만 맞음 → "good" (⭐3점)
 - 틀리거나 너무 짧음 → "retry" (⭐1점)
 JSON만 반환:
 {"grade":"great|good|retry","score":"5|3|1","comment":"따뜻한 칭찬과 피드백 2문장. 초등학생 눈높이로!"}`},
-  2:{word:'중심 생각',answer:'글에서 글쓴이가 가장 말하고 싶은 핵심 내용',
-    prompt:`초등학교 4학년 국어 선생님이에요. 아이가 "중심 생각"을 사용해서 문장을 만든 것을 채점해주세요.
+  2:{word:'인물',answer:'이야기 속에 나오는 사람이나 동물',
+    prompt:`초등학교 4학년 국어 선생님이에요. 아이가 "인물"을 사용해서 문장을 만든 것을 채점해주세요.
 채점 기준:
-- "중심 생각"이라는 단어가 문장 안에 들어가 있으면 무조건 "great" (⭐5점)
-- 문장 길이나 내용은 상관없어요. 짧아도 OK!
+- "인물"이라는 단어가 문장 안에 들어가 있으면 무조건 "great" (⭐5점)
+- 문장 길이나 내용은 상관없어요. 짧아도 OK, 틀린 내용이어도 OK
 - 단어를 전혀 사용하지 않은 경우만 "retry" (⭐1점)
 - 아이의 창의적인 문장을 항상 칭찬해주세요!
 JSON만 반환:
-{"grade":"great|good|retry","score":"5|3|1","comment":"아이 문장을 그대로 칭찬하는 따뜻한 피드백 2문장!"}`}
+{"grade":"great|good|retry","score":"5|3|1","comment":"아이 문장을 그대로 칭찬하는 따뜻한 피드백 2문장. 어떤 문장이든 칭찬해주세요!"}`}
 };
 
 const qData={
-  q1:{ok:'정답이에요! 🎉 중심 생각은 글쓴이가 가장 말하고 싶은 핵심 내용이에요.',ng:'아쉬워요! 중심 생각은 "글쓴이가 가장 말하고 싶은 핵심 내용"이에요.',ans:'② 글쓴이가 가장 말하고 싶은 핵심 내용'},
-  q2:{ok:'정답이에요! 🎉 문단은 글을 이루는 하나의 토막이에요.',ng:'아쉬워요! 문단은 "글을 이루는 하나의 토막"이에요.',ans:'③ 글을 이루는 하나의 토막'},
-  q3:{ok:'정답이에요! 🎉 책의 제목을 보면 어떤 내용인지 짐작할 수 있어요.',ng:'아쉬워요! 책의 "제목"을 보면 내용을 짐작할 수 있어요.',ans:'② 제목'}
+  q1:{ok:'정답이에요! 🎉 인물은 이야기 속에 나오는 사람이나 동물이에요.',ng:'아쉬워요! 인물은 "이야기 속에 나오는 사람이나 동물"이에요.',ans:'③ 이야기 속에 나오는 사람이나 동물'},
+  q2:{ok:'정답이에요! 🎉 배경은 이야기가 펼쳐지는 때와 장소예요.',ng:'아쉬워요! 배경은 "이야기가 펼쳐지는 때와 장소"예요.',ans:'② 이야기가 펼쳐지는 때와 장소'},
+  q3:{ok:'정답이에요! 🎉 학교 운동장은 장소이니까 "배경"이 알맞아요.',ng:'아쉬워요! 학교 운동장은 장소이니까 "배경"이 알맞아요.',ans:'③ 배경'}
 };
 
 function updateSteps(current){
@@ -355,7 +341,7 @@ function renderAI(idx,result,d){
         <div><div class="ai-grade-label">${g.label}</div><div class="ai-score">⭐ ${result.score} / 5점</div></div>
       </div>
       <div class="ai-comment">${result.comment}</div>
-      <div class="ai-answer"><strong>📖 ${idx===1?'정확한 뜻':'활용 예시'}</strong>${idx===1?d.answer:'이 글의 중심 생각은 환경을 보호해야 한다는 것이에요.'}</div>
+      <div class="ai-answer"><strong>📖 ${idx===1?'정확한 뜻':'활용 예시'}</strong>${idx===1?d.answer:'이 이야기의 주요 인물은 토끼와 거북이예요.'}</div>
     </div>${retryBtn}`;
   document.getElementById('s'+idx+'Next').disabled=false;
 }
