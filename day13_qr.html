@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>13일차 QR 학습</title>
+<style>* { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: "Apple SD Gothic Neo", "Malgun Gothic", sans-serif; background: #f5f5f0; min-height: 100vh; }
+  .header { background: #1a1a1a; color: white; padding: 28px 20px 32px; text-align: center; }
+  .day-badge { display: inline-block; background: #4caf50; color: white; font-size: 13px; font-weight: 700; padding: 5px 14px; border-radius: 20px; margin-bottom: 14px; }
+  .header h1 { font-size: 26px; font-weight: 800; line-height: 1.3; margin-bottom: 8px; }
+  .header p { font-size: 13px; color: #aaa; line-height: 1.7; }
+  .progress-bar { display: flex; align-items: center; justify-content: center; padding: 20px 16px; background: white; }
+  .step { display: flex; flex-direction: column; align-items: center; gap: 4px; }
+  .step-circle { width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 700; background: #e0e0e0; color: #999; transition: all 0.3s; }
+  .step-circle.active { background: #1a1a1a; color: white; }
+  .step-circle.done { background: #4caf50; color: white; font-size: 0; }
+  .step-circle.done::after { content: "✓"; font-size: 14px; }
+  .step-label { font-size: 11px; color: #999; }
+  .step-line { width: 40px; height: 2px; background: #e0e0e0; margin-bottom: 16px; transition: background 0.3s; }
+  .step-line.done { background: #4caf50; }
+  .content { padding: 20px 16px; max-width: 480px; margin: 0 auto; }
+  .question-card { background: white; border-radius: 16px; padding: 24px 20px; box-shadow: 0 2px 12px rgba(0,0,0,0.06); }
+  .question-meta { font-size: 13px; color: #999; margin-bottom: 10px; }
+  .question-tag { display: inline-block; padding: 3px 10px; border-radius: 20px; font-size: 12px; font-weight: 600; margin-bottom: 14px; }
+  .tag-concept { background: #e8f5e9; color: #388e3c; }
+  .tag-apply { background: #e3f2fd; color: #1565c0; }
+  .tag-write { background: #f3e5f5; color: #7b1fa2; }
+  .question-text { font-size: 18px; font-weight: 700; color: #1a1a1a; margin-bottom: 6px; }
+  .keyword { color: #4caf50; }
+  .question-sub { font-size: 13px; color: #888; margin-bottom: 20px; }
+  .options { display: flex; flex-direction: column; gap: 10px; }
+  .option-btn { padding: 16px 18px; border: 1.5px solid #e0e0e0; border-radius: 12px; background: white; font-size: 15px; color: #333; text-align: left; cursor: pointer; transition: all 0.2s; font-family: inherit; }
+  .option-btn:hover:not(:disabled) { border-color: #4caf50; background: #f9fef9; }
+  .option-btn.correct { border-color: #4caf50; background: #e8f5e9; color: #2e7d32; font-weight: 700; }
+  .option-btn.wrong { border-color: #ef5350; background: #ffebee; color: #c62828; text-decoration: line-through; opacity: 0.7; }
+  .feedback { margin-top: 14px; padding: 14px 16px; background: #e8f5e9; border-radius: 10px; font-size: 14px; color: #2e7d32; display: none; }
+  .feedback.show { display: block; }
+  .hint-text { text-align: center; font-size: 13px; color: #bbb; margin-top: 20px; }
+  .hint-text.active { color: #4caf50; }
+  .next-btn { width: 100%; padding: 18px; background: #1a1a1a; color: white; border: none; border-radius: 14px; font-size: 16px; font-weight: 700; cursor: pointer; margin-top: 20px; font-family: inherit; }
+  .next-btn:disabled { background: #ccc; cursor: default; }
+  .next-btn:not(:disabled):hover { background: #333; }
+  .write-mission { background: #f3e5f5; border-radius: 12px; padding: 16px; margin-bottom: 20px; font-size: 14px; color: #7b1fa2; line-height: 1.6; }
+  .write-word { font-size: 32px; font-weight: 800; text-align: center; color: #1a1a1a; margin: 16px 0 4px; }
+  .write-example { text-align: center; font-size: 13px; color: #999; margin-bottom: 16px; }
+  .write-textarea { width: 100%; min-height: 100px; border: 1.5px solid #e0e0e0; border-radius: 12px; padding: 14px; font-size: 15px; font-family: inherit; resize: none; outline: none; transition: border-color 0.2s; }
+  .write-textarea:focus, .write-textarea.filled { border-color: #7b1fa2; }
+  .submit-btn { width: 100%; padding: 18px; background: #1a1a1a; color: white; border: none; border-radius: 14px; font-size: 16px; font-weight: 700; cursor: pointer; margin-top: 20px; font-family: inherit; }
+  .submit-btn:disabled { background: #ccc; cursor: default; }
+  .submit-btn:not(:disabled):hover { background: #333; }
+  .result-score { background: #1a1a1a; color: white; border-radius: 16px; padding: 32px 20px; text-align: center; margin-bottom: 16px; }
+  .score-number { font-size: 64px; font-weight: 900; line-height: 1; }
+  .score-label { font-size: 16px; color: #aaa; margin-top: 6px; }
+  .result-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px; }
+  .stat-card { background: white; border-radius: 14px; padding: 20px; text-align: center; }
+  .stat-number { font-size: 28px; font-weight: 800; color: #4caf50; }
+  .stat-label { font-size: 13px; color: #999; margin-top: 4px; }
+  .my-sentence-card { background: white; border-radius: 14px; padding: 20px; margin-bottom: 16px; }
+  .my-sentence-title { font-size: 13px; color: #999; margin-bottom: 10px; }
+  .my-sentence-text { font-size: 17px; font-weight: 600; color: #1a1a1a; }
+  .kakao-card { background: #fffde7; border: 1.5px solid #ffe082; border-radius: 14px; padding: 20px; text-align: center; margin-bottom: 16px; }
+  .kakao-card h3 { font-size: 15px; font-weight: 700; color: #f57f17; margin-bottom: 6px; }
+  .kakao-card p { font-size: 13px; color: #795548; line-height: 1.6; }
+  .kakao-btn { width: 100%; padding: 16px; background: #FEE500; color: #3c1e1e; border: none; border-radius: 12px; font-size: 15px; font-weight: 700; cursor: pointer; margin-top: 12px; font-family: inherit; }
+  .app-card { background: #1a1a1a; border-radius: 14px; padding: 24px 20px; text-align: center; margin-bottom: 16px; }
+  .app-card h3 { font-size: 17px; font-weight: 800; color: white; margin-bottom: 6px; }
+  .app-card p { font-size: 13px; color: #aaa; line-height: 1.6; }
+  .highlight { color: #4caf50; font-weight: 700; }
+  .app-btn { width: 100%; padding: 16px; background: #FEE500; color: #3c1e1e; border: none; border-radius: 12px; font-size: 15px; font-weight: 700; cursor: pointer; margin-top: 12px; font-family: inherit; }
+  .retry-btn { width: 100%; padding: 16px; background: transparent; color: #999; border: 1.5px solid #e0e0e0; border-radius: 12px; font-size: 15px; font-weight: 600; cursor: pointer; font-family: inherit; }
+  .screen { display: none; }
+  .screen.active { display: block; }</style>
+</head>
+<body>
+<div class="header">
+  <div class="day-badge">📚 13일차 QR 학습</div>
+  <h1>초4 국어 어휘<br>AI 학습 체험</h1>
+  <p>개념 확인 + 활용 + 문장 만들기<br>선생님이 직접 피드백해줘요!</p>
+</div>
+<div class="progress-bar">
+  <div class="step"><div class="step-circle active" id="s1">1</div><div class="step-label">개념</div></div>
+  <div class="step-line" id="l1"></div>
+  <div class="step"><div class="step-circle" id="s2">2</div><div class="step-label">개념</div></div>
+  <div class="step-line" id="l2"></div>
+  <div class="step"><div class="step-circle" id="s3">3</div><div class="step-label">활용</div></div>
+  <div class="step-line" id="l3"></div>
+  <div class="step"><div class="step-circle" id="s4">4</div><div class="step-label">문장쓰기</div></div>
+  <div class="step-line" id="l4"></div>
+  <div class="step"><div class="step-circle" id="s5">🎯</div><div class="step-label">결과</div></div>
+</div>
+<div class="content">
+  <div class="screen active" id="screen1">
+    <div class="question-card">
+      <div class="question-meta">문제 1 / 4</div>
+      <span class="question-tag tag-concept">개념 확인</span>
+      <div class="question-text"><span class="keyword">맞춤법</span>에 대한 설명으로 알맞은 것은?</div>
+      <div class="options" id="opts1">
+        <button class="option-btn" data-correct="false" onclick="checkAnswer(1,this,false)">① 글에서 쓰는 여러 표시</button>
+        <button class="option-btn" data-correct="false" onclick="checkAnswer(1,this,false)">② 뜻이 비슷한 말</button>
+        <button class="option-btn" data-correct="true" onclick="checkAnswer(1,this,true)">③ 말을 바르게 쓰는 규칙</button>
+        <button class="option-btn" data-correct="false" onclick="checkAnswer(1,this,false)">④ 뜻이 반대인 말</button>
+      </div>
+      <div class="feedback" id="fb1">정답이에요! 🎉 맞춤법은 말을 바르게 쓰는 규칙이에요.</div>
+    </div>
+    <div class="hint-text" id="hint1">문제를 풀고 다음으로 넘어가요</div>
+    <button class="next-btn" id="next1" disabled onclick="goTo(2)">다음 문제 →</button>
+  </div>
+  <div class="screen" id="screen2">
+    <div class="question-card">
+      <div class="question-meta">문제 2 / 4</div>
+      <span class="question-tag tag-concept">개념 확인</span>
+      <div class="question-text"><span class="keyword">동의어</span>에 대한 설명으로 알맞은 것은?</div>
+      <div class="options" id="opts2">
+        <button class="option-btn" data-correct="false" onclick="checkAnswer(2,this,false)">① 말을 바르게 쓰는 규칙</button>
+        <button class="option-btn" data-correct="true" onclick="checkAnswer(2,this,true)">② 뜻이 비슷한 말</button>
+        <button class="option-btn" data-correct="false" onclick="checkAnswer(2,this,false)">③ 뜻이 반대인 말</button>
+        <button class="option-btn" data-correct="false" onclick="checkAnswer(2,this,false)">④ 띄어 써야 할 곳을 구분함</button>
+      </div>
+      <div class="feedback" id="fb2">정답이에요! 🎉 동의어는 뜻이 비슷한 말이에요.</div>
+    </div>
+    <div class="hint-text" id="hint2">잘하고 있어요! 💪</div>
+    <button class="next-btn" id="next2" disabled onclick="goTo(3)">다음 문제 →</button>
+  </div>
+  <div class="screen" id="screen3">
+    <div class="question-card">
+      <div class="question-meta">문제 3 / 4</div>
+      <span class="question-tag tag-apply">활용 문제</span>
+      <div class="question-text">기쁨의 ___는 슬픔이에요.</div>
+      <div class="question-sub">빈칸에 알맞은 말은?</div>
+      <div class="options" id="opts3">
+        <button class="option-btn" data-correct="false" onclick="checkAnswer(3,this,false)">① 맞춤법</button>
+        <button class="option-btn" data-correct="true" onclick="checkAnswer(3,this,true)">② 반의어</button>
+        <button class="option-btn" data-correct="false" onclick="checkAnswer(3,this,false)">③ 동의어</button>
+        <button class="option-btn" data-correct="false" onclick="checkAnswer(3,this,false)">④ 띄어쓰기</button>
+      </div>
+      <div class="feedback" id="fb3">정답이에요! 🎉 뜻이 반대인 말은 반의어예요.</div>
+    </div>
+    <div class="hint-text" id="hint3">마지막! 문장 만들기예요 ✍️</div>
+    <button class="next-btn" id="next3" disabled onclick="goTo(4)">문장 만들기 →</button>
+  </div>
+  <div class="screen" id="screen4">
+    <div class="question-card">
+      <div class="question-meta">문제 4 / 4</div>
+      <span class="question-tag tag-write">문장 만들기</span>
+      <div class="write-mission">✍️ 문장 만들기 미션<br>"<strong>띄어쓰기</strong>"을 사용해서<br>문장을 만들어봐요! 어떤 문장이든 OK 😊</div>
+      <div class="write-word">띄어쓰기</div>
+      <div class="write-example">예) 띄어쓰기를 잘못하면 뜻이 달라질 수 있어요...</div>
+      <textarea class="write-textarea" id="writeInput" placeholder="띄어쓰기을 넣어서 문장을 써봐요..." oninput="checkWrite()"></textarea>
+    </div>
+    <button class="submit-btn" id="submitBtn" disabled onclick="goToResult()">제출하기 →</button>
+  </div>
+  <div class="screen" id="screen5">
+    <div class="result-score">
+      <div class="score-number" id="scoreNum">100</div><div>%</div>
+      <div class="score-label" id="scoreLabel">완벽해요! 🌟</div>
+    </div>
+    <div class="result-stats">
+      <div class="stat-card"><div class="stat-number" id="statCorrect">3/3</div><div class="stat-label">개념·활용</div></div>
+      <div class="stat-card"><div class="stat-number">✍️</div><div class="stat-label">문장 완성!</div></div>
+    </div>
+    <div class="my-sentence-card">
+      <div class="my-sentence-title">🔥 내가 만든 문장</div>
+      <div class="my-sentence-text" id="mySentence"></div>
+    </div>
+    <div class="kakao-card">
+      <h3>📸 부모님께 보여주세요!</h3>
+      <p>이 화면을 캡처해서<br>카카오채널로 보내주시면<br>선생님이 직접 피드백해드려요 😊</p>
+      <button class="kakao-btn" onclick="window.open('https://pf.kakao.com/_xaFxmxb','_blank')">💬 하루10분국어어휘 채널 바로가기</button>
+    </div>
+    <div class="app-card">
+      <h3>🌱 오늘도 잘했어요!<br>앱 출시를 기다려주세요</h3>
+      <p>매일 새로운 어휘와 독해 문제로<br><span class="highlight">실력을 쌓을 수 있는 앱</span>이 곧 출시돼요!</p>
+      <button class="app-btn" onclick="window.open('https://pf.kakao.com/_xaFxmxb','_blank')">📚 카카오채널 추가하기 🧡</button>
+    </div>
+    <button class="retry-btn" onclick="retry()">다시 도전하기 🔄</button>
+  </div>
+</div>
+<script>let correctCount=0,answered=[false,false,false];
+  function checkAnswer(q,btn,isCorrect){
+    document.querySelectorAll("#opts"+q+" .option-btn").forEach(b=>b.disabled=true);
+    if(isCorrect){btn.classList.add("correct");if(!answered[q-1]){correctCount++;answered[q-1]=true;}}
+    else{btn.classList.add("wrong");document.querySelectorAll("#opts"+q+" .option-btn").forEach(b=>{if(b.getAttribute("data-correct")==="true")b.classList.add("correct");});answered[q-1]=true;}
+    const fb=document.getElementById("fb"+q);fb.classList.add("show");
+    if(!isCorrect){fb.style.background="#ffebee";fb.style.color="#c62828";fb.textContent="아쉬워요! 정답을 확인해보세요 😊";}
+    document.getElementById("next"+q).disabled=false;
+    document.getElementById("hint"+q).classList.add("active");
+  }
+  function checkWrite(){const val=document.getElementById("writeInput").value.trim();document.getElementById("writeInput").classList.toggle("filled",val.length>0);document.getElementById("submitBtn").disabled=val.length===0;}
+  function goTo(n){document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active"));document.getElementById("screen"+n).classList.add("active");updateProgress(n);window.scrollTo(0,0);}
+  function goToResult(){document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active"));document.getElementById("screen5").classList.add("active");document.getElementById("mySentence").textContent=document.getElementById("writeInput").value.trim();const pct=Math.round((correctCount/3)*100);document.getElementById("scoreNum").textContent=pct;document.getElementById("statCorrect").textContent=correctCount+"/3";document.getElementById("scoreLabel").textContent=pct===100?"완벽해요! 🌟":pct>=66?"잘했어요! 👍":"다시 해봐요! 💪";updateProgress(5);window.scrollTo(0,0);}
+  function updateProgress(current){for(let i=1;i<=5;i++){const c=document.getElementById("s"+i);if(!c)continue;c.classList.remove("active","done");if(i<current)c.classList.add("done");else if(i===current)c.classList.add("active");}for(let i=1;i<=4;i++){const l=document.getElementById("l"+i);if(!l)continue;l.classList.toggle("done",i<current);}}
+  function retry(){correctCount=0;answered=[false,false,false];document.querySelectorAll(".option-btn").forEach(b=>{b.disabled=false;b.classList.remove("correct","wrong");});document.querySelectorAll(".feedback").forEach(f=>{f.classList.remove("show");f.style.background="";f.style.color="";});document.querySelectorAll(".next-btn").forEach(b=>b.disabled=true);document.getElementById("writeInput").value="";document.getElementById("submitBtn").disabled=true;goTo(1);}</script>
+</body>
+</html>
