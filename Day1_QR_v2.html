@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Day 1 QR 학습</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif;
+  background: #F5F4FF;
+  min-height: 100vh;
+}
+
+/* 헤더 */
+.hero {
+  background: linear-gradient(135deg, #3C3489 0%, #7F77DD 100%);
+  color: #fff;
+  text-align: center;
+  padding: 28px 20px 24px;
+}
+.hero-badge {
+  background: rgba(255,255,255,0.25);
+  color: #fff;
+  border-radius: 99px;
+  padding: 5px 16px;
+  font-size: 12px;
+  font-weight: 700;
+  display: inline-block;
+  margin-bottom: 12px;
+  border: 1px solid rgba(255,255,255,0.4);
+}
+.hero h1 { font-size: 24px; font-weight: 700; line-height: 1.3; margin-bottom: 8px; }
+.hero p { font-size: 12px; color: rgba(255,255,255,0.75); line-height: 1.7; }
+
+/* 스텝 */
+.steps {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  padding: 18px 20px;
+  background: #fff;
+  border-bottom: 1px solid #EEEDFE;
+}
+.step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+.step-circle {
+  width: 32px; height: 32px;
+  border-radius: 50%;
+  background: #EEEDFE;
+  color: #AFA9EC;
+  font-size: 13px;
+  font-weight: 700;
+  display: flex; align-items: center; justify-content: center;
+}
+.step-circle.active { background: #534AB7; color: #fff; }
+.step-circle.done { background: #7F77DD; color: #fff; font-size: 14px; }
+.step-label { font-size: 10px; color: #888; }
+.step-line { width: 28px; height: 2px; background: #EEEDFE; margin-bottom: 14px; }
+.step-line.done { background: #7F77DD; }
+
+/* 카드 */
+.content { padding: 16px; }
+.card {
+  background: #fff;
+  border-radius: 16px;
+  padding: 22px 18px;
+  margin-bottom: 12px;
+}
+
+/* 문제 */
+.q-tag {
+  display: inline-block;
+  border-radius: 99px;
+  padding: 3px 12px;
+  font-size: 11px;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+.tag-concept { background: #EEEDFE; color: #3C3489; }
+.tag-apply { background: #E1F5EE; color: #085041; }
+.tag-wrong { background: #FAEEDA; color: #633806; }
+
+.q-text { font-size: 16px; font-weight: 700; color: #1a1a1a; line-height: 1.65; margin-bottom: 4px; }
+.q-sub { font-size: 12px; color: #888; margin-bottom: 14px; }
+
+/* 선택지 */
+.choices { display: flex; flex-direction: column; gap: 9px; }
+.choice-btn {
+  border: 1.5px solid #E8E7F0;
+  border-radius: 10px;
+  padding: 13px 15px;
+  font-size: 14px;
+  color: #2C2C2A;
+  background: #fff;
+  cursor: pointer;
+  text-align: left;
+  transition: all 0.15s;
+}
+.choice-btn:hover:not(:disabled) { border-color: #7F77DD; background: #F5F4FF; }
+.choice-btn.correct { border-color: #7F77DD !important; background: #EEEDFE !important; color: #26215C !important; font-weight: 700; }
+.choice-btn.wrong { border-color: #ef5350 !important; background: #FFEBEE !important; color: #B71C1C !important; }
+.choice-btn:disabled { cursor: default; opacity: 0.6; }
+.choice-btn.correct:disabled { opacity: 1; }
+
+/* 결과 메시지 */
+.result-msg {
+  margin-top: 12px;
+  border-radius: 10px;
+  padding: 11px 14px;
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1.6;
+  display: none;
+}
+.result-msg.ok { background: #EEEDFE; color: #3C3489; display: block; }
+.result-msg.no1 { background: #FAEEDA; color: #633806; display: block; }
+.result-msg.no2 { background: #FBEAF0; color: #993556; display: block; }
+
+/* 다음 버튼 */
+.bottom-bar {
+  position: sticky;
+  bottom: 0;
+  background: #fff;
+  border-top: 1px solid #EEEDFE;
+  padding: 12px 16px;
+}
+.hint-text { font-size: 12px; color: #aaa; text-align: center; margin-bottom: 8px; }
+.next-btn {
+  width: 100%;
+  padding: 16px;
+  border-radius: 14px;
+  border: none;
+  background: #534AB7;
+  color: #fff;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+.next-btn:disabled { opacity: 0.3; cursor: default; }
+.next-btn.ready { opacity: 1; }
+
+/* 문장 만들기 */
+.mission-box {
+  background: #F3F0FF;
+  border-radius: 12px;
+  padding: 14px 16px;
+  margin-bottom: 14px;
+}
+.mission-label { font-size: 11px; font-weight: 700; color: #534AB7; margin-bottom: 4px; }
+.mission-text { font-size: 14px; color: #26215C; line-height: 1.65; }
+.word-big { font-size: 28px; font-weight: 700; color: #3C3489; text-align: center; margin: 14px 0 4px; }
+.word-hint { font-size: 12px; color: #aaa; text-align: center; margin-bottom: 14px; }
+.sentence-input {
+  width: 100%;
+  border: 2px solid #EEEDFE;
+  border-radius: 12px;
+  padding: 14px;
+  font-size: 15px;
+  font-family: inherit;
+  color: #1a1a1a;
+  resize: none;
+  height: 100px;
+  line-height: 1.6;
+  transition: border-color 0.2s;
+}
+.sentence-input:focus { outline: none; border-color: #534AB7; }
+
+/* 결과 화면 */
+.result-screen { display: none; }
+.score-hero {
+  background: linear-gradient(135deg, #3C3489 0%, #7F77DD 100%);
+  color: #fff;
+  text-align: center;
+  padding: 32px 20px;
+  margin-bottom: 12px;
+}
+.score-pct { font-size: 56px; font-weight: 700; line-height: 1; }
+.score-pct span { font-size: 28px; }
+.score-label { font-size: 14px; color: rgba(255,255,255,0.8); margin-top: 6px; }
+.stat-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 12px; }
+.stat-box { background: #fff; border-radius: 12px; padding: 16px; text-align: center; }
+.stat-num { font-size: 22px; font-weight: 700; color: #534AB7; }
+.stat-desc { font-size: 11px; color: #888; margin-top: 3px; }
+.my-sentence-box { background: #fff; border-radius: 12px; padding: 16px; margin-bottom: 12px; }
+.ms-label { font-size: 11px; font-weight: 700; color: #534AB7; margin-bottom: 8px; }
+.ms-text { font-size: 16px; font-weight: 700; color: #1a1a1a; line-height: 1.6; }
+.share-box {
+  background: #fff;
+  border: 2px solid #EEEDFE;
+  border-radius: 12px;
+  padding: 18px;
+  text-align: center;
+  margin-bottom: 12px;
+}
+.share-emoji { font-size: 28px; margin-bottom: 8px; }
+.share-title { font-size: 15px; font-weight: 700; color: #3C3489; margin-bottom: 6px; }
+.share-desc { font-size: 12px; color: #666; line-height: 1.7; margin-bottom: 14px; }
+.kakao-btn {
+  display: block;
+  width: 100%;
+  padding: 14px;
+  border-radius: 12px;
+  border: none;
+  background: #FEE500;
+  color: #1a1a1a;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  text-decoration: none;
+  text-align: center;
+}
+.app-box {
+  background: linear-gradient(135deg, #3C3489 0%, #7F77DD 100%);
+  border-radius: 12px;
+  padding: 24px 18px;
+  text-align: center;
+  margin-bottom: 12px;
+}
+.app-emoji { font-size: 28px; margin-bottom: 10px; }
+.app-title { font-size: 18px; font-weight: 700; color: #fff; margin-bottom: 6px; }
+.app-desc { font-size: 12px; color: rgba(255,255,255,0.75); line-height: 1.7; margin-bottom: 14px; }
+.app-desc em { color: #CECBF6; font-style: normal; font-weight: 700; }
+.app-btn {
+  display: block;
+  width: 100%;
+  padding: 14px;
+  border-radius: 12px;
+  border: none;
+  background: #FEE500;
+  color: #1a1a1a;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  text-decoration: none;
+  text-align: center;
+}
+.retry-btn {
+  display: block;
+  width: 100%;
+  padding: 14px;
+  border-radius: 12px;
+  border: 1.5px solid #EEEDFE;
+  background: #fff;
+  color: #888;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  text-align: center;
+  margin-bottom: 24px;
+}
+</style>
+</head>
+<body>
+
+<!-- 헤더 -->
+<div class="hero">
+  <div class="hero-badge">📚 Day 1 QR 학습</div>
+  <h1>초4 국어 어휘<br>AI 학습 체험</h1>
+  <p>개념 확인 + 활용 + 문장 만들기<br>선생님이 직접 피드백해줘요!</p>
+</div>
+
+<!-- 스텝 -->
+<div class="steps" id="steps">
+  <div class="step">
+    <div class="step-circle active" id="s1">1</div>
+    <div class="step-label">개념</div>
+  </div>
+  <div class="step-line" id="l1"></div>
+  <div class="step">
+    <div class="step-circle" id="s2">2</div>
+    <div class="step-label">개념</div>
+  </div>
+  <div class="step-line" id="l2"></div>
+  <div class="step">
+    <div class="step-circle" id="s3">3</div>
+    <div class="step-label">활용</div>
+  </div>
+  <div class="step-line" id="l3"></div>
+  <div class="step">
+    <div class="step-circle" id="s4">4</div>
+    <div class="step-label">문장쓰기</div>
+  </div>
+  <div class="step-line" id="l4"></div>
+  <div class="step">
+    <div class="step-circle" id="s5">🎯</div>
+    <div class="step-label">결과</div>
+  </div>
+</div>
+
+<!-- 문제 화면 -->
+<div id="quiz-screen">
+  <div class="content">
+    <div class="card" id="quiz-card">
+      <div class="q-tag" id="q-tag"></div>
+      <div class="q-text" id="q-text"></div>
+      <div class="q-sub" id="q-sub"></div>
+      <div id="q-body"></div>
+      <div class="result-msg" id="result-msg"></div>
+    </div>
+  </div>
+  <div class="bottom-bar">
+    <div class="hint-text" id="hint-text">문제를 풀고 다음으로 넘어가요</div>
+    <button class="next-btn" id="next-btn" disabled onclick="nextStep()">다음 문제 →</button>
+  </div>
+</div>
+
+<!-- 결과 화면 -->
+<div id="result-screen" class="result-screen">
+  <div class="score-hero">
+    <div class="score-pct" id="score-pct">100<span>%</span></div>
+    <div class="score-label" id="score-label">완벽해요! 🌟</div>
+  </div>
+  <div class="content">
+    <div class="stat-row">
+      <div class="stat-box">
+        <div class="stat-num" id="stat-num">3/3</div>
+        <div class="stat-desc">개념·활용</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-num">✍️</div>
+        <div class="stat-desc">문장 완성!</div>
+      </div>
+    </div>
+    <div class="my-sentence-box">
+      <div class="ms-label">✍️ 내가 만든 문장</div>
+      <div class="ms-text" id="my-sentence-result"></div>
+    </div>
+    <div class="share-box">
+      <div class="share-emoji">📸</div>
+      <div class="share-title">부모님께 보여주세요! 📸</div>
+      <div class="share-desc">아이가 만든 문장을 캡처해서<br>카카오채널로 보내주시면<br><strong style="color:#3C3489;">선생님이 한 줄 피드백을 드려요 😊</strong></div>
+      <a class="kakao-btn" href="#" target="_blank">💬 하루10분국어어휘 채널 바로가기</a>
+    </div>
+    <div class="app-box">
+      <div class="app-emoji">🌱</div>
+      <div class="app-title">오늘도 잘했어요!<br>앱 출시를 기다려주세요</div>
+      <div class="app-desc">매일 새로운 어휘와 독해 문제로<br><em>실력을 쌓을 수 있는 앱</em>이 곧 출시돼요!</div>
+      <a class="app-btn" href="#" target="_blank">📱 카카오채널 추가하기 🧡</a>
+    </div>
+    <button class="retry-btn" onclick="restart()">다시 도전하기 🔄</button>
+  </div>
+</div>
+
+<script>
+const questions = [
+  {
+    step: 1,
+    tag: '개념 확인',
+    tagClass: 'tag-concept',
+    type: 'choice',
+    q: '"관계"에 대한 설명으로 알맞은 것은?',
+    sub: '',
+    choices: [
+      '① 생각이나 감정이 서로 부딪힘',
+      '② 상대방 말을 잘못 이해하는 것',
+      '③ 사람과 사람 사이의 이어짐',
+      '④ 다툰 사이가 다시 풀리는 것'
+    ],
+    answer: 2,
+    explain: '정답이에요! 🎉 관계는 사람과 사람 사이의 이어짐이에요.'
+  },
+  {
+    step: 2,
+    tag: '개념 확인',
+    tagClass: 'tag-concept',
+    type: 'wrong',
+    q: '틀린 뜻을 찾아보세요!',
+    sub: '넷 중 하나가 틀렸어요.',
+    choices: [
+      '관계 = 사람 사이의 이어짐',
+      '갈등 = 마음이 서로 부딪힘',
+      '오해 = 다툰 사이가 다시 풀림',
+      '화해 = 다툼이 있던 사이가 풀림'
+    ],
+    answer: 2,
+    explain: '정답이에요! 🎉 "오해"는 상대방 말을 잘못 이해하는 것이에요. "다툰 사이가 다시 풀림"은 화해예요!'
+  },
+  {
+    step: 3,
+    tag: '활용 문제',
+    tagClass: 'tag-apply',
+    type: 'choice',
+    q: '"민수가 사과하고 친구와\n다시 친해졌어요."\n→ 어떤 어휘가 어울릴까요?',
+    sub: '상황을 보고 알맞은 어휘를 골라요.',
+    choices: ['① 관계', '② 갈등', '③ 오해', '④ 화해'],
+    answer: 3,
+    explain: '정답이에요! 🎉 사과하고 다시 친해졌으니 "화해"가 딱 맞아요!'
+  }
+];
+
+let cur = 0;
+let score = 0;
+let wrongCnt = 0;
+let answered = false;
+let mySentence = '';
+
+const stepIds = ['s1','s2','s3','s4','s5'];
+const lineIds = ['l1','l2','l3','l4'];
+
+function updateSteps() {
+  stepIds.forEach((id, i) => {
+    const el = document.getElementById(id);
+    el.className = 'step-circle';
+    if (i < cur) { el.className += ' done'; el.textContent = '✓'; }
+    else if (i === cur) { el.className += ' active'; el.textContent = i === 4 ? '🎯' : (i+1); }
+    else { el.textContent = i === 4 ? '🎯' : (i+1); }
+  });
+  lineIds.forEach((id, i) => {
+    document.getElementById(id).className = 'step-line' + (i < cur ? ' done' : '');
+  });
+}
+
+function showQ() {
+  answered = false;
+  wrongCnt = 0;
+  const q = questions[cur];
+
+  document.getElementById('q-tag').textContent = q.tag;
+  document.getElementById('q-tag').className = 'q-tag ' + q.tagClass;
+  document.getElementById('q-text').textContent = q.q;
+  document.getElementById('q-sub').textContent = q.sub;
+  document.getElementById('result-msg').className = 'result-msg';
+  document.getElementById('result-msg').textContent = '';
+
+  const nextBtn = document.getElementById('next-btn');
+  nextBtn.disabled = true;
+  nextBtn.textContent = cur === questions.length - 1 ? '문장 만들기 →' : '다음 문제 →';
+  document.getElementById('hint-text').textContent = '문제를 풀고 다음으로 넘어가요';
+
+  const body = document.getElementById('q-body');
+  body.innerHTML = '';
+
+  if (q.type === 'choice' || q.type === 'wrong') {
+    const div = document.createElement('div');
+    div.className = 'choices';
+    q.choices.forEach((c, i) => {
+      const btn = document.createElement('button');
+      btn.className = 'choice-btn';
+      btn.textContent = c;
+      btn.onclick = () => checkAnswer(i, btn, q);
+      div.appendChild(btn);
+    });
+    body.appendChild(div);
+  }
+
+  updateSteps();
+}
+
+function checkAnswer(idx, btn, q) {
+  if (answered) return;
+  const all = document.querySelectorAll('.choice-btn');
+  const res = document.getElementById('result-msg');
+  const nextBtn = document.getElementById('next-btn');
+
+  if (idx === q.answer) {
+    answered = true;
+    btn.classList.add('correct');
+    all.forEach(b => b.disabled = true);
+    if (wrongCnt === 0) score++;
+    res.className = 'result-msg ok';
+    res.textContent = q.explain;
+    nextBtn.disabled = false;
+    document.getElementById('hint-text').textContent = cur === questions.length - 1 ? '마지막! 문장 만들기예요 ✍️' : '잘하고 있어요! 💪';
+  } else {
+    wrongCnt++;
+    btn.classList.add('wrong');
+    btn.disabled = true;
+    res.className = wrongCnt === 1 ? 'result-msg no1' : 'result-msg no2';
+    res.textContent = wrongCnt === 1 ? '앗! 틀렸네요~😅 다시 한 번 풀어볼까요?' : '한 번 더!! 💪 할 수 있어요!';
+  }
+}
+
+function nextStep() {
+  cur++;
+  if (cur === questions.length) {
+    showSentence();
+  } else {
+    showQ();
+  }
+}
+
+function showSentence() {
+  updateSteps();
+  const card = document.getElementById('quiz-card');
+  card.innerHTML = `
+    <div class="mission-box">
+      <div class="mission-label">✍️ 문장 만들기 미션</div>
+      <div class="mission-text">"오해"를 사용해서<br>문장을 만들어봐요! 어떤 문장이든 OK 😊</div>
+    </div>
+    <div class="word-big">오해</div>
+    <div class="word-hint">예) 내가 친구를 오해해서 많이 미안했어요.</div>
+    <textarea class="sentence-input" id="sentence-input" placeholder="예) 내가 친구를 오해해서 많이 미안했어요."></textarea>
+    <div id="char-hint" style="font-size:12px; color:#AFA9EC; margin-top:8px; text-align:center;">띄어쓰기 포함 7자 이상 써주세요 😊</div>
+  `;
+  const inp = document.getElementById('sentence-input');
+  inp.addEventListener('input', () => {
+    const nextBtn = document.getElementById('next-btn');
+    const len = inp.value.length;
+    const hint = document.getElementById('char-hint');
+    if (len >= 7) {
+      hint.style.color = '#7F77DD';
+      hint.textContent = '좋아요! 제출할 수 있어요 ✨';
+      nextBtn.disabled = false;
+    } else {
+      hint.style.color = '#AFA9EC';
+      hint.textContent = `띄어쓰기 포함 7자 이상 써주세요 😊 (현재 ${len}자)`;
+      nextBtn.disabled = true;
+    }
+  });
+
+  document.getElementById('hint-text').textContent = '다 썼으면 제출해요!';
+  const nextBtn = document.getElementById('next-btn');
+  nextBtn.disabled = true;
+  nextBtn.textContent = '제출하기 →';
+  nextBtn.onclick = submitSentence;
+}
+
+function submitSentence() {
+  const inp = document.getElementById('sentence-input');
+  mySentence = inp.value.trim();
+  cur++;
+  updateSteps();
+  showResult();
+}
+
+function showResult() {
+  document.getElementById('quiz-screen').style.display = 'none';
+  const rs = document.getElementById('result-screen');
+  rs.style.display = 'block';
+
+  const pct = Math.round(score / questions.length * 100);
+  document.getElementById('score-pct').innerHTML = pct + '<span>%</span>';
+
+  let label = '';
+  if (pct === 100) label = '완벽해요! 🌟';
+  else if (pct >= 66) label = '잘했어요! 😊';
+  else label = '다시 도전해봐요! 💪';
+  document.getElementById('score-label').textContent = label;
+  document.getElementById('stat-num').textContent = score + '/' + questions.length;
+  document.getElementById('my-sentence-result').textContent = mySentence;
+}
+
+function restart() {
+  cur = 0; score = 0; wrongCnt = 0; answered = false; mySentence = '';
+  document.getElementById('quiz-screen').style.display = 'block';
+  document.getElementById('result-screen').style.display = 'none';
+  document.getElementById('next-btn').onclick = nextStep;
+  showQ();
+}
+
+showQ();
+</script>
+</body>
+</html>
