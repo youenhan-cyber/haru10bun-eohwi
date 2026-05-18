@@ -196,6 +196,8 @@
       <div class="write-example-hint">참고해도 좋아요 👇</div>
       <div class="write-example">예) 이 글의 제목을 보면 중심 생각을 짐작할 수 있어요.</div>
       <textarea class="write-textarea" id="writeInput" placeholder="나만의 문장을 써봐요..." oninput="checkWrite()"></textarea>
+      <div id="writeWarn" style="display:none;margin-top:8px;padding:10px 14px;background:#fff3e0;border-radius:10px;font-size:13px;color:#e65100;">✏️ 오늘 배운 단어를 넣어야 제출할 수 있어요!</div>
+      <div id="writeWarn" style="display:none;margin-top:8px;padding:10px 14px;background:#fff3e0;border-radius:10px;font-size:13px;color:#e65100;">✏️ 단어를 2개 이상 넣어야 제출할 수 있어요!</div>
     </div>
     <button class="submit-btn" id="submitBtn" disabled onclick="goToResult()">제출하기 →</button>
   </div>
@@ -236,15 +238,24 @@
 
   function checkMatch(groupId, btn, isCorrect) {
     const group = document.getElementById(groupId);
-    group.querySelectorAll('.match-btn').forEach(b => b.disabled = true);
     const idx = parseInt(groupId.replace('m','')) - 1;
     const fb = document.getElementById('mf' + (idx+1));
     if (isCorrect) {
+      group.querySelectorAll('.match-btn').forEach(b => b.disabled = true);
       btn.classList.add('correct');
       fb.textContent = '정답이에요! 🎉';
       fb.className = 'match-feedback show ok';
       if (!matchDone[idx]) { matchCorrect++; matchDone[idx] = true; }
     } else {
+      if (!btn.dataset.tried) {
+        btn.dataset.tried = '1';
+        btn.classList.add('wrong');
+        fb.textContent = '아쉬워요! 한 번 더 도전해봐요 🌱';
+        fb.className = 'match-feedback show ng';
+        setTimeout(() => { btn.classList.remove('wrong'); btn.removeAttribute('data-tried'); fb.className = 'match-feedback'; }, 900);
+        return;
+      }
+      group.querySelectorAll('.match-btn').forEach(b => b.disabled = true);
       btn.classList.add('wrong');
       group.querySelectorAll('.match-btn').forEach(b => { if(b.getAttribute('data-correct')==='true') b.classList.add('correct'); });
       fb.textContent = '아쉬워요! 정답을 확인해보세요 😊';
@@ -259,19 +270,28 @@
   }
 
   function checkFriend(btn, isWrong) {
-    document.querySelectorAll('.friend-btn').forEach(b => b.disabled = true);
+    const fb = document.getElementById('findFeedback');
     if (isWrong) {
+      document.querySelectorAll('.friend-btn').forEach(b => b.disabled = true);
       btn.classList.add('correct');
-      const fb = document.getElementById('findFeedback');
       fb.innerHTML = '정답이에요! 🎉 지유가 틀렸어요.<br><strong>문단</strong>은 여러 <strong>문장</strong>이 모인 글의 덩어리예요. 낱말이 아니에요!';
       fb.className = 'find-feedback show ok';
       findCorrect = true;
     } else {
+      if (!btn.dataset.tried) {
+        btn.dataset.tried = '1';
+        btn.classList.add('wrong');
+        fb.innerHTML = '아쉬워요! 한 번 더 도전해봐요 🌱';
+        fb.className = 'find-feedback show ng';
+        setTimeout(() => { btn.classList.remove('wrong'); btn.removeAttribute('data-tried'); fb.className = 'find-feedback'; }, 900);
+        document.querySelectorAll('.friend-btn').forEach(b => b.disabled = false);
+        return;
+      }
+      document.querySelectorAll('.friend-btn').forEach(b => b.disabled = true);
       btn.classList.add('wrong');
       document.querySelectorAll('.friend-btn').forEach(b => {
         if(b.onclick.toString().includes('true')) b.classList.add('correct');
       });
-      const fb = document.getElementById('findFeedback');
       fb.innerHTML = '아쉬워요! 지유가 틀린 친구예요.<br><strong>문단</strong>은 여러 <strong>문장</strong>이 모인 글의 덩어리예요 😊';
       fb.className = 'find-feedback show ng';
     }
@@ -283,7 +303,11 @@
   function checkWrite() {
     const val = document.getElementById('writeInput').value.trim();
     document.getElementById('writeInput').classList.toggle('filled', val.length > 0);
-    document.getElementById('submitBtn').disabled = val.length === 0;
+    const tags = Array.from(document.querySelectorAll('[style*="border-radius:20px"][style*="#fff3e0"], .write-tag')).map(el => el.textContent.trim());
+    const matched = tags.filter(w => val.includes(w));
+    const warn = document.getElementById('writeWarn');
+    if (warn) warn.style.display = (val.length === 0 || matched.length >= 2) ? 'none' : 'block';
+    document.getElementById('submitBtn').disabled = val.length === 0 || matched.length < 2;
   }
 
   function goTo(n) {

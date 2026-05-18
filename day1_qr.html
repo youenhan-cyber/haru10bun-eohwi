@@ -158,6 +158,7 @@ body{font-family:'Apple SD Gothic Neo','Noto Sans KR',sans-serif;background:#f7f
       <div class="word-hint">참고해도 좋아요 👇</div>
       <div class="word-example">예) 이 글의 중심 생각은 환경을 보호해야 한다는 것이에요.</div>
       <textarea class="write-input" id="s1Input" rows="4" placeholder="나만의 문장을 써봐요..." oninput="checkWriteInput()"></textarea>
+      <div id="writeWarn" style="display:none;margin-top:8px;padding:10px 14px;background:#fff3e0;border-radius:10px;font-size:13px;color:#e65100;">✏️ 오늘 배운 단어를 넣어야 제출할 수 있어요!</div>
       <div id="s1Done"></div>
     </div>
     <button class="btn-primary" id="s1Submit" disabled onclick="submitWrite()">제출하기 →</button>
@@ -203,24 +204,38 @@ function goStep(screenId,stepNum){
 
 function checkQ(btn,qid,correct,fbId,nextId){
   const screen=btn.closest('.card-wrap');
-  screen.querySelectorAll('.choice').forEach(b=>b.disabled=true);
   const d=qData[qid];
   if(correct){
+    screen.querySelectorAll('.choice').forEach(b=>b.disabled=true);
     btn.classList.add('correct');
     document.getElementById(fbId).innerHTML=`<div class="feedback-box ok">${d.ok}</div>`;
     scores[qid]=1;
+    document.getElementById(nextId).disabled=false;
   }else{
-    btn.classList.add('wrong');
-    screen.querySelectorAll('.choice').forEach(b=>{if(b.textContent===d.ans)b.classList.add('correct')});
-    document.getElementById(fbId).innerHTML=`<div class="feedback-box ng">${d.ng}</div>`;
+    if(!btn.dataset.tried){
+      btn.dataset.tried='1';
+      btn.classList.add('wrong');
+      document.getElementById(fbId).innerHTML=`<div class="feedback-box ng">아쉬워요! 한 번 더 도전해봐요 🌱</div>`;
+      setTimeout(()=>{btn.classList.remove('wrong');btn.removeAttribute('data-tried');},700);
+    } else {
+      screen.querySelectorAll('.choice').forEach(b=>b.disabled=true);
+      btn.classList.add('wrong');
+      screen.querySelectorAll('.choice').forEach(b=>{if(b.textContent===d.ans)b.classList.add('correct')});
+      document.getElementById(fbId).innerHTML=`<div class="feedback-box ng">${d.ng}</div>`;
+      document.getElementById(nextId).disabled=false;
+    }
   }
-  document.getElementById(nextId).disabled=false;
 }
 
 function checkWriteInput(){
   const val=document.getElementById('s1Input').value.trim();
-  document.getElementById('s1Submit').disabled=val.length<2;
   writtenSentence=val;
+  const wordEl=document.querySelector('.word-big');
+  const word=wordEl?wordEl.textContent.trim():'';
+  const ok=word&&val.includes(word);
+  const warnEl=document.getElementById('writeWarn');
+  if(warnEl)warnEl.style.display=(ok||val.length===0)?'none':'block';
+  document.getElementById('s1Submit').disabled=val.length<2||!ok;
 }
 
 function submitWrite(){

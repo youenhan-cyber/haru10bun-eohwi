@@ -29,12 +29,9 @@
   .tag-write { background: #f3e5f5; color: #7b1fa2; }
   .section-title { font-size: 16px; font-weight: 700; color: #1a1a1a; margin-bottom: 6px; }
   .section-sub { font-size: 13px; color: #888; margin-bottom: 16px; }
-
-  /* 상황 카드 */
   .situation-box { background: #f0faf4; border: 1.5px solid #a5d6a7; border-radius: 14px; padding: 16px 18px; margin-bottom: 18px; }
   .situation-label { font-size: 12px; color: #27ae60; font-weight: 700; margin-bottom: 6px; }
   .situation-text { font-size: 16px; font-weight: 600; color: #1a1a1a; line-height: 1.6; }
-
   .options { display: flex; flex-direction: column; gap: 10px; }
   .option-btn { padding: 14px 18px; border: 1.5px solid #e0e0e0; border-radius: 12px; background: white; font-size: 15px; color: #333; text-align: left; cursor: pointer; transition: all 0.2s; font-family: inherit; }
   .option-btn:hover:not(:disabled) { border-color: #27ae60; background: #f0faf4; }
@@ -44,12 +41,6 @@
   .feedback.show { display: block; }
   .feedback.ok { background: #e8f5e9; color: #1b5e20; }
   .feedback.ng { background: #ffebee; color: #c62828; }
-
-  /* 두번째 상황 */
-  .q2-situation { background: #f0faf4; border: 1.5px solid #a5d6a7; border-radius: 14px; padding: 16px 18px; margin-bottom: 18px; }
-
-  /* 틀린 친구 */
-  .words-box { background: #e8f5e9; border-radius: 10px; padding: 12px 14px; font-size: 13px; color: #1b5e20; margin-bottom: 16px; }
   .friends-grid { display: flex; flex-direction: column; gap: 10px; }
   .friend-btn { padding: 16px 18px; border: 1.5px solid #e0e0e0; border-radius: 12px; background: white; font-size: 14px; color: #333; text-align: left; cursor: pointer; transition: all 0.2s; font-family: inherit; line-height: 1.5; }
   .friend-btn:hover:not(:disabled) { border-color: #e91e63; background: #fce4ec; }
@@ -62,16 +53,14 @@
   .find-feedback.show { display: block; }
   .find-feedback.ok { background: #e8f5e9; color: #1b5e20; }
   .find-feedback.ng { background: #ffebee; color: #c62828; }
-
-  /* 문장쓰기 */
   .write-mission { background: #f3e5f5; border-radius: 12px; padding: 16px; margin-bottom: 16px; font-size: 14px; color: #7b1fa2; line-height: 1.6; }
   .write-combo { display: flex; align-items: center; justify-content: center; gap: 10px; margin: 14px 0; }
   .write-word-badge { background: #1a1a1a; color: white; padding: 8px 18px; border-radius: 20px; font-size: 17px; font-weight: 800; }
   .write-plus { font-size: 20px; font-weight: 800; color: #7b1fa2; }
-  .write-example { text-align: center; font-size: 13px; color: #999; margin-bottom: 14px; }
+  .write-example-hint { text-align: center; font-size: 12px; color: #888; margin-bottom: 6px; }
+  .write-example { text-align: center; font-size: 13px; color: #4caf50; background: #f0fdf4; border-radius: 8px; padding: 8px 12px; margin-bottom: 16px; line-height: 1.6; }
   .write-textarea { width: 100%; min-height: 100px; border: 1.5px solid #e0e0e0; border-radius: 12px; padding: 14px; font-size: 15px; font-family: inherit; resize: none; outline: none; transition: border-color 0.2s; }
   .write-textarea:focus, .write-textarea.filled { border-color: #7b1fa2; }
-
   .next-btn { width: 100%; padding: 18px; background: #1a1a1a; color: white; border: none; border-radius: 14px; font-size: 16px; font-weight: 700; cursor: pointer; margin-top: 20px; font-family: inherit; }
   .next-btn:disabled { background: #ccc; cursor: default; }
   .next-btn:not(:disabled):hover { background: #333; }
@@ -80,8 +69,6 @@
   .submit-btn:not(:disabled):hover { background: #333; }
   .hint-text { text-align: center; font-size: 13px; color: #bbb; margin-top: 16px; }
   .hint-text.active { color: #27ae60; }
-
-  /* 결과 */
   .result-score { background: #1a1a1a; color: white; border-radius: 16px; padding: 32px 20px; text-align: center; margin-bottom: 16px; }
   .score-number { font-size: 64px; font-weight: 900; line-height: 1; }
   .score-label { font-size: 16px; color: #aaa; margin-top: 6px; }
@@ -92,13 +79,13 @@
   .my-sentence-card { background: white; border-radius: 14px; padding: 20px; margin-bottom: 16px; }
   .my-sentence-title { font-size: 13px; color: #999; margin-bottom: 10px; }
   .my-sentence-text { font-size: 17px; font-weight: 600; color: #1a1a1a; }
-  .kakao-card { background: #fffde7; border: 1.5px solid #ffe082; border-radius: 14px; padding: 20px; text-align: center; margin-bottom: 16px; }
-  .kakao-card h3 { font-size: 15px; font-weight: 700; color: #f57f17; margin-bottom: 6px; }
-  .kakao-card p { font-size: 13px; color: #795548; line-height: 1.6; }
-  .kakao-btn { width: 100%; padding: 16px; background: #FEE500; color: #3c1e1e; border: none; border-radius: 12px; font-size: 15px; font-weight: 700; cursor: pointer; margin-top: 12px; font-family: inherit; }
+  .kakao-card { background: #fffbeb; border: 1.5px solid #f6ad55; border-radius: 14px; padding: 20px; text-align: center; margin-bottom: 16px; }
+  .kakao-card h3 { font-size: 15px; font-weight: 700; color: #b45309; margin-bottom: 6px; }
+  .kakao-card p { font-size: 13px; color: #78350f; line-height: 1.7; margin-bottom: 14px; }
+  .kakao-btn { width: 100%; padding: 16px; background: #FEE500; color: #3c1e1e; border: none; border-radius: 12px; font-size: 15px; font-weight: 700; cursor: pointer; font-family: inherit; }
   .app-card { background: #1a1a1a; border-radius: 14px; padding: 24px 20px; text-align: center; margin-bottom: 16px; }
   .app-card h3 { font-size: 17px; font-weight: 800; color: white; margin-bottom: 6px; }
-  .app-card p { font-size: 13px; color: #aaa; line-height: 1.6; }
+  .app-card p { font-size: 13px; color: #aaa; line-height: 1.6; margin-bottom: 0; }
   .highlight { color: #27ae60; font-weight: 700; }
   .app-btn { width: 100%; padding: 16px; background: #FEE500; color: #3c1e1e; border: none; border-radius: 12px; font-size: 15px; font-weight: 700; cursor: pointer; margin-top: 12px; font-family: inherit; }
   .retry-btn { width: 100%; padding: 16px; background: transparent; color: #999; border: 1.5px solid #e0e0e0; border-radius: 12px; font-size: 15px; font-weight: 600; cursor: pointer; font-family: inherit; }
@@ -110,8 +97,8 @@
 
 <div class="header">
   <div class="day-badge">🌱 29일차 실전 QR</div>
-  <h1>초4 국어 어휘<br>실전 체험</h1>
-  <p>상황 퀴즈 + 틀린 친구 찾기 + 문장 만들기<br>선생님이 직접 피드백해줘요!</p>
+  <h1>초4 국어 어휘<br>29일차 실전</h1>
+  <p>상황 퀴즈 + 틀린 친구 찾기 + 문장 만들기<br>오늘 배운 단어로 한 문장을 써 보세요 🌱</p>
 </div>
 
 <div class="progress-bar">
@@ -128,14 +115,12 @@
 
 <div class="content">
 
-  <!-- 상황 퀴즈 1 -->
   <div class="screen active" id="screen1">
     <div class="card">
       <div class="question-meta">문제 1 / 4</div>
       <span class="question-tag tag-situation">🎯 상황 퀴즈</span>
       <div class="section-title">상황을 보고 알맞은 단어를 골라요!</div>
       <div class="section-sub">각 상황에 맞는 단어는 무엇일까요?</div>
-
       <div class="situation-box">
         <div class="situation-label">상황 1</div>
         <div class="situation-text">친구가 상을 받아서 기뻐하며 웃고 있어요. 이 친구의 감정은?</div>
@@ -147,9 +132,7 @@
         <button class="option-btn" onclick="checkSit(1,'a',this,false)">④ 긴장</button>
       </div>
       <div class="feedback" id="fb1a"></div>
-
       <div style="margin: 20px 0; border-top: 1.5px dashed #f0f0f0;"></div>
-
       <div class="situation-box">
         <div class="situation-label">상황 2</div>
         <div class="situation-text">친구에게 "이거 좀 도와줄래?"라고 말했어요. 이것은?</div>
@@ -166,14 +149,12 @@
     <button class="next-btn" id="next1" disabled onclick="goTo(2)">다음 문제 →</button>
   </div>
 
-  <!-- 상황 퀴즈 2 -->
   <div class="screen" id="screen2">
     <div class="card">
       <div class="question-meta">문제 2 / 4</div>
       <span class="question-tag tag-situation">🎯 상황 퀴즈</span>
       <div class="section-title">상황을 보고 알맞은 단어를 골라요!</div>
       <div class="section-sub">각 상황에 맞는 단어는 무엇일까요?</div>
-
       <div class="situation-box">
         <div class="situation-label">상황 3</div>
         <div class="situation-text">선생님이 안내문을 나눠줬어요. 안내문에는 "봄 소풍은 5월 20일 오전 10시에 한강 공원에서 진행됩니다."라고 적혀 있었어요. 소풍을 준비하려면 가장 먼저 확인해야 할 것은?</div>
@@ -185,9 +166,7 @@
         <button class="option-btn" onclick="checkSit(2,'a',this,false)">④ 순서와 과정</button>
       </div>
       <div class="feedback" id="fb2a"></div>
-
       <div style="margin: 20px 0; border-top: 1.5px dashed #f0f0f0;"></div>
-
       <div class="situation-box">
         <div class="situation-label">상황 4</div>
         <div class="situation-text">지호는 매일 밤 30분씩 꾸준히 단어를 외웠어요. 그다음 날 시험에서 100점을 받았어요. 꾸준히 단어를 외운 것은 100점을 받은 것의?</div>
@@ -204,26 +183,16 @@
     <button class="next-btn" id="next2" disabled onclick="goTo(3)">다음 문제 →</button>
   </div>
 
-  <!-- 틀린 친구 찾기 -->
   <div class="screen" id="screen3">
     <div class="card">
       <div class="question-meta">문제 3 / 4</div>
       <span class="question-tag tag-find">🔍 틀린 친구 찾기</span>
       <div class="section-title">4명 중 <span style="color:#e91e63">틀린 설명</span>을 한 친구는?</div>
-
       <div class="friends-grid">
-        <button class="friend-btn" data-wrong="false" onclick="checkFriend(this,false)">
-          <span class="friend-name">민준 😄</span> "기쁨은 즐거운 감정이야."
-        </button>
-        <button class="friend-btn" data-wrong="false" onclick="checkFriend(this,false)">
-          <span class="friend-name">지유 😊</span> "부탁은 도움을 요청하는 거야."
-        </button>
-        <button class="friend-btn" data-wrong="true" onclick="checkFriend(this,true)">
-          <span class="friend-name">도운 😅</span> "사과는 상대를 칭찬하는 거야."
-        </button>
-        <button class="friend-btn" data-wrong="false" onclick="checkFriend(this,false)">
-          <span class="friend-name">에나 😁</span> "시간은 일이 일어난 때야."
-        </button>
+        <button class="friend-btn" data-wrong="false" onclick="checkFriend(this,false)"><span class="friend-name">민준 😄</span> "기쁨은 즐거운 감정이야."</button>
+        <button class="friend-btn" data-wrong="false" onclick="checkFriend(this,false)"><span class="friend-name">지유 😊</span> "부탁은 도움을 요청하는 거야."</button>
+        <button class="friend-btn" data-wrong="true" onclick="checkFriend(this,true)"><span class="friend-name">도운 😅</span> "사과는 상대를 칭찬하는 거야."</button>
+        <button class="friend-btn" data-wrong="false" onclick="checkFriend(this,false)"><span class="friend-name">에나 😁</span> "시간은 일이 일어난 때야."</button>
       </div>
       <div class="find-feedback" id="findFeedback"></div>
     </div>
@@ -231,7 +200,6 @@
     <button class="next-btn" id="next3" disabled onclick="goTo(4)">다음 문제 →</button>
   </div>
 
-  <!-- 문장 만들기 -->
   <div class="screen" id="screen4">
     <div class="card">
       <div class="question-meta">문제 4 / 4</div>
@@ -242,13 +210,15 @@
         <span class="write-plus">+</span>
         <span class="write-word-badge">슬픔</span>
       </div>
+      <div class="write-example-hint">참고해도 좋아요 👇</div>
       <div class="write-example">예) 기쁨과 슬픔은 모두 소중한 감정이에요.</div>
-      <textarea class="write-textarea" id="writeInput" placeholder="두 단어를 모두 넣어서 문장을 써봐요..." oninput="checkWrite()"></textarea>
+      <textarea class="write-textarea" id="writeInput" placeholder="나만의 문장을 써봐요..." oninput="checkWrite()"></textarea>
+      <div id="writeWarn" style="display:none;margin-top:8px;padding:10px 14px;background:#fff3e0;border-radius:10px;font-size:13px;color:#e65100;">✏️ 오늘 배운 단어를 넣어야 제출할 수 있어요!</div>
+      <div id="writeWarn" style="display:none;margin-top:8px;padding:10px 14px;background:#fff3e0;border-radius:10px;font-size:13px;color:#e65100;">✏️ 단어를 2개 이상 넣어야 제출할 수 있어요!</div>
     </div>
     <button class="submit-btn" id="submitBtn" disabled onclick="goToResult()">제출하기 →</button>
   </div>
 
-  <!-- 결과 -->
   <div class="screen" id="screen5">
     <div class="result-score">
       <div class="score-number" id="scoreNum">100</div>
@@ -261,18 +231,18 @@
       <div class="stat-card"><div class="stat-number">✍️</div><div class="stat-label">문장 완성</div></div>
     </div>
     <div class="my-sentence-card">
-      <div class="my-sentence-title">🔥 내가 만든 문장</div>
+      <div class="my-sentence-title">✍️ 내가 만든 문장</div>
       <div class="my-sentence-text" id="mySentence"></div>
     </div>
     <div class="kakao-card">
       <h3>📸 부모님께 보여주세요!</h3>
-      <p>이 화면을 캡처해서<br>카카오채널로 보내주시면<br>선생님이 직접 피드백해드려요 😊</p>
-      <button class="kakao-btn" onclick="window.open('https://pf.kakao.com/_xaFxmxb','_blank')">💬 하루10분국어어휘 채널 바로가기</button>
+      <p>이 화면을 캡처해서<br>카카오채널로 보내주시면<br>선생님이 직접 피드백해드려요 😊<br><br>(런칭 기간 동안 피드백 5회 제공)</p>
+      <button class="kakao-btn" onclick="window.open('https://pf.kakao.com/_sVUKX','_blank')">📲 카카오채널 가기</button>
     </div>
     <div class="app-card">
-      <h3>🌱 오늘도 잘했어요!<br>앱 출시를 기다려주세요</h3>
-      <p>매일 새로운 어휘와 독해 문제로<br><span class="highlight">실력을 쌓을 수 있는 앱</span>이 곧 출시돼요!</p>
-      <button class="app-btn" onclick="window.open('https://pf.kakao.com/_xaFxmxb','_blank')">📚 카카오채널 추가하기 🧡</button>
+      <h3>오늘도 잘했어요! 🌱</h3>
+      <p>Vol.2 심화편 & 어휘 앱 곧 출시 예정!<br>카카오채널 추가하고 소식 받아보세요</p>
+      <button class="app-btn" onclick="window.open('https://pf.kakao.com/_sVUKX','_blank')">📲 카카오채널 추가하기 💛</button>
     </div>
     <button class="retry-btn" onclick="retry()">다시 도전하기 🔄</button>
   </div>
@@ -287,23 +257,36 @@
   function checkSit(q, sub, btn, isCorrect) {
     const key = q + sub;
     const groupId = 'opts' + key;
-    document.querySelectorAll('#' + groupId + ' .option-btn').forEach(b => b.disabled = true);
     const fb = document.getElementById('fb' + key);
     if (isCorrect) {
+      document.querySelectorAll('#' + groupId + ' .option-btn').forEach(b => b.disabled = true);
       btn.classList.add('correct');
       fb.textContent = '정답이에요! 🎉';
       fb.className = 'feedback show ok';
       if (!sitDone[key]) { sitCorrect++; sitDone[key] = true; }
     } else {
+      if (!btn.dataset.tried) {
+        btn.dataset.tried = '1';
+        btn.classList.add('wrong');
+        fb.textContent = '아쉬워요! 한 번 더 도전해봐요 🌱';
+        fb.className = 'feedback show ng';
+        fb.style.background = '#fff3e0'; fb.style.color = '#e65100';
+        setTimeout(() => {
+          btn.classList.remove('wrong'); btn.removeAttribute('data-tried');
+          fb.className = 'feedback'; fb.style.background = ''; fb.style.color = '';
+        }, 900);
+        return;
+      }
+      document.querySelectorAll('#' + groupId + ' .option-btn').forEach(b => b.disabled = true);
       btn.classList.add('wrong');
       document.querySelectorAll('#' + groupId + ' .option-btn').forEach(b => {
         if (b.onclick.toString().includes('true')) b.classList.add('correct');
       });
       fb.textContent = '아쉬워요! 정답을 확인해보세요 😊';
       fb.className = 'feedback show ng';
+      fb.style.background = ''; fb.style.color = '';
       sitDone[key] = true;
     }
-    // 해당 화면의 두 문제 모두 풀었는지 확인
     if (q === 1 && sitDone['1a'] && sitDone['1b']) {
       document.getElementById('next1').disabled = false;
       const h = document.getElementById('hint1');
@@ -319,14 +302,24 @@
   }
 
   function checkFriend(btn, isWrong) {
-    document.querySelectorAll('.friend-btn').forEach(b => b.disabled = true);
     const fb = document.getElementById('findFeedback');
     if (isWrong) {
+      document.querySelectorAll('.friend-btn').forEach(b => b.disabled = true);
       btn.classList.add('correct');
       fb.innerHTML = '정답이에요! 🎉 도운이가 틀렸어요.<br><strong>사과</strong>는 잘못을 <strong>미안하다고 말하는 것</strong>이에요. 칭찬이 아니에요!';
       fb.className = 'find-feedback show ok';
       findCorrect = true;
     } else {
+      if (!btn.dataset.tried) {
+        btn.dataset.tried = '1';
+        btn.classList.add('wrong');
+        fb.innerHTML = '아쉬워요! 한 번 더 도전해봐요 🌱';
+        fb.className = 'find-feedback show ng';
+        setTimeout(() => { btn.classList.remove('wrong'); btn.removeAttribute('data-tried'); fb.className = 'find-feedback'; }, 900);
+        document.querySelectorAll('.friend-btn').forEach(b => b.disabled = false);
+        return;
+      }
+      document.querySelectorAll('.friend-btn').forEach(b => b.disabled = true);
       btn.classList.add('wrong');
       document.querySelectorAll('.friend-btn').forEach(b => {
         if (b.getAttribute('data-wrong') === 'true') b.classList.add('correct');
@@ -343,7 +336,11 @@
   function checkWrite() {
     const val = document.getElementById('writeInput').value.trim();
     document.getElementById('writeInput').classList.toggle('filled', val.length > 0);
-    document.getElementById('submitBtn').disabled = val.length === 0;
+    const badges = Array.from(document.querySelectorAll('.write-word-badge')).map(el => el.textContent.trim());
+    const matched = badges.filter(w => val.includes(w));
+    const warn = document.getElementById('writeWarn');
+    if (warn) warn.style.display = (val.length === 0 || matched.length >= 2) ? 'none' : 'block';
+    document.getElementById('submitBtn').disabled = val.length === 0 || matched.length < 2;
   }
 
   function goTo(n) {
