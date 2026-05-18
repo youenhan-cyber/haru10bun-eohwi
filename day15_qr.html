@@ -7,13 +7,10 @@
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
   body { font-family: 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif; background: #f5f5f0; min-height: 100vh; }
-
   .header { background: #1a1a1a; color: white; padding: 28px 20px 32px; text-align: center; }
   .day-badge { display: inline-block; background: #e67e22; color: white; font-size: 13px; font-weight: 700; padding: 5px 14px; border-radius: 20px; margin-bottom: 14px; }
   .header h1 { font-size: 26px; font-weight: 800; line-height: 1.3; margin-bottom: 8px; }
   .header p { font-size: 13px; color: #aaa; line-height: 1.7; }
-
-  /* 진행바 */
   .progress-bar { display: flex; align-items: center; justify-content: center; padding: 20px 16px; background: white; gap: 0; }
   .step { display: flex; flex-direction: column; align-items: center; gap: 4px; }
   .step-circle { width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700; background: #e0e0e0; color: #999; transition: all 0.3s; }
@@ -23,18 +20,13 @@
   .step-label { font-size: 10px; color: #999; text-align: center; }
   .step-line { width: 28px; height: 2px; background: #e0e0e0; margin-bottom: 16px; transition: background 0.3s; }
   .step-line.done { background: #e67e22; }
-
   .content { padding: 20px 16px; max-width: 480px; margin: 0 auto; }
-
-  /* 카드 공통 */
   .card { background: white; border-radius: 16px; padding: 24px 20px; box-shadow: 0 2px 12px rgba(0,0,0,0.06); margin-bottom: 12px; }
   .question-meta { font-size: 13px; color: #999; margin-bottom: 10px; }
   .question-tag { display: inline-block; padding: 3px 10px; border-radius: 20px; font-size: 12px; font-weight: 600; margin-bottom: 14px; }
   .tag-match { background: #fff3e0; color: #e65100; }
   .tag-find { background: #fce4ec; color: #c62828; }
   .tag-write { background: #f3e5f5; color: #7b1fa2; }
-
-  /* 카테고리 매칭 */
   .match-section { margin-bottom: 20px; }
   .match-word { font-size: 20px; font-weight: 800; color: #e67e22; margin-bottom: 12px; }
   .match-options { display: flex; flex-direction: column; gap: 8px; }
@@ -47,10 +39,7 @@
   .match-feedback.ok { background: #e8f5e9; color: #2e7d32; }
   .match-feedback.ng { background: #ffebee; color: #c62828; }
   .match-divider { border: none; border-top: 1.5px dashed #f0f0f0; margin: 18px 0; }
-
   .section-title { font-size: 16px; font-weight: 700; color: #1a1a1a; margin-bottom: 16px; }
-
-  /* 틀린 친구 찾기 */
   .friends-grid { display: flex; flex-direction: column; gap: 10px; }
   .friend-btn { padding: 16px 18px; border: 1.5px solid #e0e0e0; border-radius: 12px; background: white; font-size: 14px; color: #333; text-align: left; cursor: pointer; transition: all 0.2s; font-family: inherit; line-height: 1.5; }
   .friend-btn:hover:not(:disabled) { border-color: #e91e63; background: #fce4ec; }
@@ -63,15 +52,11 @@
   .find-feedback.show { display: block; }
   .find-feedback.ok { background: #e8f5e9; color: #2e7d32; }
   .find-feedback.ng { background: #ffebee; color: #c62828; }
-
-  /* 문장쓰기 */
   .write-mission { background: #f3e5f5; border-radius: 12px; padding: 16px; margin-bottom: 16px; font-size: 14px; color: #7b1fa2; line-height: 1.6; }
-  .write-word { font-size: 32px; font-weight: 800; text-align: center; color: #1a1a1a; margin: 12px 0 4px; }
-  .write-example { text-align: center; font-size: 13px; color: #999; margin-bottom: 14px; }
+  .write-example-hint { text-align: center; font-size: 12px; color: #888; margin-bottom: 6px; }
+  .write-example { text-align: center; font-size: 13px; color: #4caf50; background: #f0fdf4; border-radius: 8px; padding: 8px 12px; margin-bottom: 16px; line-height: 1.6; }
   .write-textarea { width: 100%; min-height: 100px; border: 1.5px solid #e0e0e0; border-radius: 12px; padding: 14px; font-size: 15px; font-family: inherit; resize: none; outline: none; transition: border-color 0.2s; }
   .write-textarea:focus, .write-textarea.filled { border-color: #7b1fa2; }
-
-  /* 버튼 */
   .next-btn { width: 100%; padding: 18px; background: #1a1a1a; color: white; border: none; border-radius: 14px; font-size: 16px; font-weight: 700; cursor: pointer; margin-top: 20px; font-family: inherit; }
   .next-btn:disabled { background: #ccc; cursor: default; }
   .next-btn:not(:disabled):hover { background: #333; }
@@ -80,8 +65,6 @@
   .submit-btn:not(:disabled):hover { background: #333; }
   .hint-text { text-align: center; font-size: 13px; color: #bbb; margin-top: 16px; }
   .hint-text.active { color: #e67e22; }
-
-  /* 결과 */
   .result-score { background: #1a1a1a; color: white; border-radius: 16px; padding: 32px 20px; text-align: center; margin-bottom: 16px; }
   .score-number { font-size: 64px; font-weight: 900; line-height: 1; }
   .score-label { font-size: 16px; color: #aaa; margin-top: 6px; }
@@ -92,17 +75,16 @@
   .my-sentence-card { background: white; border-radius: 14px; padding: 20px; margin-bottom: 16px; }
   .my-sentence-title { font-size: 13px; color: #999; margin-bottom: 10px; }
   .my-sentence-text { font-size: 17px; font-weight: 600; color: #1a1a1a; }
-  .kakao-card { background: #fffde7; border: 1.5px solid #ffe082; border-radius: 14px; padding: 20px; text-align: center; margin-bottom: 16px; }
-  .kakao-card h3 { font-size: 15px; font-weight: 700; color: #f57f17; margin-bottom: 6px; }
-  .kakao-card p { font-size: 13px; color: #795548; line-height: 1.6; }
-  .kakao-btn { width: 100%; padding: 16px; background: #FEE500; color: #3c1e1e; border: none; border-radius: 12px; font-size: 15px; font-weight: 700; cursor: pointer; margin-top: 12px; font-family: inherit; }
+  .kakao-card { background: #fffbeb; border: 1.5px solid #f6ad55; border-radius: 14px; padding: 20px; text-align: center; margin-bottom: 16px; }
+  .kakao-card h3 { font-size: 15px; font-weight: 700; color: #b45309; margin-bottom: 6px; }
+  .kakao-card p { font-size: 13px; color: #78350f; line-height: 1.7; margin-bottom: 14px; }
+  .kakao-btn { width: 100%; padding: 16px; background: #FEE500; color: #3c1e1e; border: none; border-radius: 12px; font-size: 15px; font-weight: 700; cursor: pointer; font-family: inherit; }
   .app-card { background: #1a1a1a; border-radius: 14px; padding: 24px 20px; text-align: center; margin-bottom: 16px; }
   .app-card h3 { font-size: 17px; font-weight: 800; color: white; margin-bottom: 6px; }
-  .app-card p { font-size: 13px; color: #aaa; line-height: 1.6; }
+  .app-card p { font-size: 13px; color: #aaa; line-height: 1.6; margin-bottom: 0; }
   .highlight { color: #e67e22; font-weight: 700; }
   .app-btn { width: 100%; padding: 16px; background: #FEE500; color: #3c1e1e; border: none; border-radius: 12px; font-size: 15px; font-weight: 700; cursor: pointer; margin-top: 12px; font-family: inherit; }
   .retry-btn { width: 100%; padding: 16px; background: transparent; color: #999; border: 1.5px solid #e0e0e0; border-radius: 12px; font-size: 15px; font-weight: 600; cursor: pointer; font-family: inherit; }
-
   .screen { display: none; }
   .screen.active { display: block; }
 </style>
@@ -111,8 +93,8 @@
 
 <div class="header">
   <div class="day-badge">🔁 15일차 복습 QR</div>
-  <h1>초4 국어 어휘<br>복습 체험</h1>
-  <p>매칭 + 틀린 친구 찾기 + 문장 만들기<br>선생님이 직접 피드백해줘요!</p>
+  <h1>초4 국어 어휘<br>15일차 복습</h1>
+  <p>매칭 + 틀린 친구 찾기 + 문장 만들기<br>오늘 배운 단어로 한 문장을 써 보세요 🌱</p>
 </div>
 
 <div class="progress-bar">
@@ -127,14 +109,11 @@
 
 <div class="content">
 
-  <!-- STEP 1: 카테고리 매칭 -->
   <div class="screen active" id="screen1">
     <div class="card">
       <div class="question-meta">문제 1 / 3</div>
       <span class="question-tag tag-match">🔗 뜻 매칭하기</span>
       <div class="section-title">각 단어의 알맞은 뜻을 골라보세요!</div>
-
-      <!-- 제목 -->
       <div class="match-section">
         <div class="match-word">① 제목</div>
         <div class="match-options" id="m1">
@@ -145,10 +124,7 @@
         </div>
         <div class="match-feedback" id="mf1"></div>
       </div>
-
       <hr class="match-divider">
-
-      <!-- 문장 -->
       <div class="match-section">
         <div class="match-word">② 문장</div>
         <div class="match-options" id="m2">
@@ -159,10 +135,7 @@
         </div>
         <div class="match-feedback" id="mf2"></div>
       </div>
-
       <hr class="match-divider">
-
-      <!-- 뜻 -->
       <div class="match-section">
         <div class="match-word">③ 뜻</div>
         <div class="match-options" id="m3">
@@ -178,7 +151,6 @@
     <button class="next-btn" id="next1" disabled onclick="goTo(2)">다음 문제 →</button>
   </div>
 
-  <!-- STEP 2: 틀린 친구 찾기 -->
   <div class="screen" id="screen2">
     <div class="card">
       <div class="question-meta">문제 2 / 3</div>
@@ -207,7 +179,6 @@
     <button class="next-btn" id="next2" disabled onclick="goTo(3)">다음 문제 →</button>
   </div>
 
-  <!-- STEP 3: 문장 만들기 -->
   <div class="screen" id="screen3">
     <div class="card">
       <div class="question-meta">문제 3 / 3</div>
@@ -222,13 +193,13 @@
         <span style="background:#fff3e0;color:#e65100;padding:5px 12px;border-radius:20px;font-size:13px;font-weight:600;">내용</span>
         <span style="background:#fff3e0;color:#e65100;padding:5px 12px;border-radius:20px;font-size:13px;font-weight:600;">중심 생각</span>
       </div>
+      <div class="write-example-hint">참고해도 좋아요 👇</div>
       <div class="write-example">예) 이 글의 제목을 보면 내용을 짐작할 수 있어요.</div>
-      <textarea class="write-textarea" id="writeInput" placeholder="두 단어를 넣어서 문장을 써봐요..." oninput="checkWrite()"></textarea>
+      <textarea class="write-textarea" id="writeInput" placeholder="나만의 문장을 써봐요..." oninput="checkWrite()"></textarea>
     </div>
     <button class="submit-btn" id="submitBtn" disabled onclick="goToResult()">제출하기 →</button>
   </div>
 
-  <!-- 결과 -->
   <div class="screen" id="screen4">
     <div class="result-score">
       <div class="score-number" id="scoreNum">100</div>
@@ -240,18 +211,18 @@
       <div class="stat-card"><div class="stat-number" id="statFind">✅</div><div class="stat-label">틀린 친구 찾기</div></div>
     </div>
     <div class="my-sentence-card">
-      <div class="my-sentence-title">🔥 내가 만든 문장</div>
+      <div class="my-sentence-title">✍️ 내가 만든 문장</div>
       <div class="my-sentence-text" id="mySentence"></div>
     </div>
     <div class="kakao-card">
       <h3>📸 부모님께 보여주세요!</h3>
-      <p>이 화면을 캡처해서<br>카카오채널로 보내주시면<br>선생님이 직접 피드백해드려요 😊</p>
-      <button class="kakao-btn" onclick="window.open('https://pf.kakao.com/_xaFxmxb','_blank')">💬 하루10분국어어휘 채널 바로가기</button>
+      <p>이 화면을 캡처해서<br>카카오채널로 보내주시면<br>선생님이 직접 피드백해드려요 😊<br><br>(런칭 기간 동안 피드백 5회 제공)</p>
+      <button class="kakao-btn" onclick="window.open('https://pf.kakao.com/_sVUKX','_blank')">📲 카카오채널 가기</button>
     </div>
     <div class="app-card">
-      <h3>🌱 오늘도 잘했어요!<br>앱 출시를 기다려주세요</h3>
-      <p>매일 새로운 어휘와 독해 문제로<br><span class="highlight">실력을 쌓을 수 있는 앱</span>이 곧 출시돼요!</p>
-      <button class="app-btn" onclick="window.open('https://pf.kakao.com/_xaFxmxb','_blank')">📚 카카오채널 추가하기 🧡</button>
+      <h3>오늘도 잘했어요! 🌱</h3>
+      <p>Vol.2 심화편 & 어휘 앱 곧 출시 예정!<br>카카오채널 추가하고 소식 받아보세요</p>
+      <button class="app-btn" onclick="window.open('https://pf.kakao.com/_sVUKX','_blank')">📲 카카오채널 추가하기 💛</button>
     </div>
     <button class="retry-btn" onclick="retry()">다시 도전하기 🔄</button>
   </div>
