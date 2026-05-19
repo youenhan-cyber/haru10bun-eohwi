@@ -144,6 +144,8 @@ body { font-family: 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif; backgrou
       <div class="write-example-hint">참고해도 좋아요 👇</div>
       <div class="write-example">예) 이야기의 주인공은 갈등을 현명하게 해결했어요.</div>
       <textarea class="write-textarea" id="writeInput" placeholder="나만의 문장을 써봐요..." oninput="checkWrite()"></textarea>
+      <div id="writeWarn" style="display:none;margin-top:8px;padding:10px 14px;background:#fff3e0;border-radius:10px;font-size:13px;color:#e65100;">✏️ 오늘 배운 단어를 넣어야 제출할 수 있어요!</div>
+      <div id="writeWarn" style="display:none;margin-top:8px;padding:10px 14px;background:#fff3e0;border-radius:10px;font-size:13px;color:#e65100;">✏️ 단어를 2개 이상 넣어야 제출할 수 있어요!</div>
     </div>
     <button class="submit-btn" id="submitBtn" disabled onclick="goToResult()">제출하기 →</button>
   </div>
@@ -176,49 +178,93 @@ body { font-family: 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif; backgrou
 <script>
 let matchCorrect=0,matchDone=[false,false,false],findCorrect=false;
 function checkMatch(gid,btn,ok){
-  document.querySelectorAll('#'+gid+' .match-btn').forEach(b=>b.disabled=true);
   const idx=parseInt(gid.replace('m',''))-1;
   const fb=document.getElementById('mf'+(idx+1));
-  if(ok){btn.classList.add('correct');fb.textContent='정답이에요! 🎉';fb.className='match-feedback show ok';if(!matchDone[idx]){matchCorrect++;matchDone[idx]=true;}}
-  else{btn.classList.add('wrong');document.querySelectorAll('#'+gid+' .match-btn').forEach(b=>{if(b.getAttribute('data-correct')==='true')b.classList.add('correct');});fb.textContent='아쉬워요! 정답을 확인해보세요 😊';fb.className='match-feedback show ng';matchDone[idx]=true;}
+  if(ok){
+    document.querySelectorAll('#'+gid+' .match-btn').forEach(b=>b.disabled=true);
+    btn.classList.add('correct');fb.textContent='잘했어요! 🎉';fb.className='match-feedback show ok';
+    if(!matchDone[idx]){matchCorrect++;matchDone[idx]=true;}
+  }else{
+    if(!window._wrongCnt)window._wrongCnt={};
+    if(!window._wrongCnt[gid]){
+      window._wrongCnt[gid]=1;btn.classList.add('wrong');
+      fb.textContent='다시 생각해 볼까요? 🌱 문제를 크게 읽어 보세요!';fb.className='match-feedback show ng';
+      setTimeout(()=>{btn.classList.remove('wrong');fb.className='match-feedback';},900);
+      return;
+    }
+    document.querySelectorAll('#'+gid+' .match-btn').forEach(b=>b.disabled=true);
+    btn.classList.add('wrong');
+    document.querySelectorAll('#'+gid+' .match-btn').forEach(b=>{if(b.getAttribute('data-correct')==='true')b.classList.add('correct');});
+    fb.innerHTML = '정답을 확인해 봐요 😊 왜 틀렸는지 읽어 보세요!'; fb.className = 'find-feedback show ng';fb.className='match-feedback show ng';matchDone[idx]=true;
+  }
   if(matchDone[0]&&matchDone[1]&&matchDone[2]){document.getElementById('next1').disabled=false;const h=document.getElementById('hint1');h.textContent='모두 완료! 다음으로 넘어가요 🎉';h.classList.add('active');}
 }
 function checkFriend(btn,isWrong){
-  document.querySelectorAll('.friend-btn').forEach(b=>b.disabled=true);
   const fb=document.getElementById('findFeedback');
   if(isWrong){
+    document.querySelectorAll('.friend-btn').forEach(b=>b.disabled=true);
     btn.classList.add('correct');
-    fb.innerHTML='정답이에요! 🎉 도운이가 틀렸어요.<br>설명문은 <strong>내용을 자세히 알려 주는 글</strong>이에요. 주장하는 글은 논설문이에요!';
+    btn.innerHTML='<span class="friend-name">도운 😎</span> "설명문은 생각을 주장하는 글이 아니라, 내용을 자세히 알려 주는 글이야."';
+    fb.innerHTML='잘했어요! 🎉 도운이가 틀렸어요.';
     fb.className='find-feedback show ok';
     findCorrect=true;
-  } else {
+  }else{
+    if(!window._friendWrong)window._friendWrong=0;
+    window._friendWrong++;
+    if(window._friendWrong===1){
+      btn.classList.add('wrong');
+      btn.disabled=true;
+      fb.innerHTML='다시 생각해 볼까요? 🌱 문제를 크게 읽어 보세요!';
+      fb.className='find-feedback show ng';
+      setTimeout(()=>{btn.classList.remove('wrong');},700);
+      return;
+    }
+    document.querySelectorAll('.friend-btn').forEach(b=>b.disabled=true);
     btn.classList.add('wrong');
-    document.querySelectorAll('.friend-btn').forEach(b=>{if(b.getAttribute('data-wrong')==='true')b.classList.add('correct');});
-    fb.innerHTML='아쉬워요! 도운이가 틀린 친구예요.<br>설명문은 <strong>내용을 자세히 알려 주는 글</strong>이에요. 주장하는 글은 논설문이에요!';
+    document.querySelectorAll('.friend-btn').forEach(b=>{
+      if(b.getAttribute('data-wrong')==='true'){
+        b.classList.add('correct');
+        b.innerHTML='<span class="friend-name">도운 😎</span> "설명문은 생각을 주장하는 글이 아니라, 내용을 자세히 알려 주는 글이야."';
+      }
+    });
+    fb.innerHTML='정답을 확인해 봐요 😊 왜 틀렸는지 읽어 보세요!';
     fb.className='find-feedback show ng';
   }
   document.getElementById('next2').disabled=false;
   const h=document.getElementById('hint2');h.textContent='다음으로 넘어가요!';h.classList.add('active');
 }
-function checkWrite(){const val=document.getElementById('writeInput').value.trim();document.getElementById('writeInput').classList.toggle('filled',val.length>0);document.getElementById('submitBtn').disabled=val.length===0;}
+function checkWrite(){
+  const val=document.getElementById('writeInput').value.trim();
+  document.getElementById('writeInput').classList.toggle('filled',val.length>0);
+  const tags=Array.from(document.querySelectorAll('[style*="border-radius:20px"][style*="#fff3e0"],.write-tag')).map(el=>el.textContent.trim());
+  const matched=tags.filter(w=>val.includes(w));
+  const ok=matched.length>=2&&val.replace(/\s/g,'').length>=10&&val.trim().split(/\s+/).length>=3;
+  const warn=document.getElementById('writeWarn');
+  if(warn){
+    if(val.length===0){warn.style.display='none';}
+    else if(!ok){warn.style.display='block';warn.style.background='#fff3e0';warn.style.color='#e65100';warn.textContent='오늘 배운 단어를 넣어 3단어 + 10글자 이상 써 봐요 🌱';}
+    else{warn.style.display='block';warn.style.background='#e8f5e9';warn.style.color='#2e7d32';warn.textContent='좋아요! 제출할 수 있어요 😊';}
+  }
+  document.getElementById('submitBtn').disabled=!ok;
+}
 function goTo(n){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById('screen'+n).classList.add('active');updateProgress(n);window.scrollTo(0,0);}
 function goToResult(){
   document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
   document.getElementById('screen4').classList.add('active');
   document.getElementById('mySentence').textContent=document.getElementById('writeInput').value.trim();
-  const total=matchCorrect+(findCorrect?1:0);
-  const pct=Math.round((total/4)*100);
-  document.getElementById('scoreNum').textContent=pct;
+  document.getElementById('scoreNum').style.display='none';
+  const pct_el=document.querySelector('.result-score > div:nth-child(2)');
+  if(pct_el)pct_el.style.display='none';
   document.getElementById('statMatch').textContent=matchCorrect+'/3';
   document.getElementById('statFind').textContent=findCorrect?'✅':'❌';
-  document.getElementById('scoreLabel').textContent=pct===100?'완벽해요! 🌟':pct>=75?'잘했어요! 👍':'다시 해봐요! 💪';
+  document.getElementById('scoreLabel').textContent='잘했어요! 오늘 어휘 미션 완료! 🌱';
   updateProgress(4);window.scrollTo(0,0);
 }
 function updateProgress(current){
   for(let i=1;i<=4;i++){const c=document.getElementById('s'+i);if(!c)continue;c.classList.remove('active','done');if(i<current)c.classList.add('done');else if(i===current)c.classList.add('active');}
   for(let i=1;i<=3;i++){const l=document.getElementById('l'+i);if(!l)continue;l.classList.toggle('done',i<current);}
 }
-function retry(){
+function retry(){window._wrongCnt={};
   matchCorrect=0;matchDone=[false,false,false];findCorrect=false;
   document.querySelectorAll('.match-btn,.friend-btn').forEach(b=>{b.disabled=false;b.classList.remove('correct','wrong');});
   document.querySelectorAll('.match-feedback').forEach(f=>{f.className='match-feedback';f.textContent='';});

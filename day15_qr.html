@@ -243,23 +243,24 @@
     if (isCorrect) {
       group.querySelectorAll('.match-btn').forEach(b => b.disabled = true);
       btn.classList.add('correct');
-      fb.textContent = '정답이에요! 🎉';
+      fb.textContent = '잘했어요! 🎉';
       fb.className = 'match-feedback show ok';
       if (!matchDone[idx]) { matchCorrect++; matchDone[idx] = true; }
     } else {
-      if (!btn.dataset.tried) {
-        btn.dataset.tried = '1';
+      if (!window._wrongCnt) window._wrongCnt = {};
+      const _wmk = groupId;
+      if (!window._wrongCnt[_wmk]) {
+        window._wrongCnt[_wmk] = 1;
         btn.classList.add('wrong');
-        fb.textContent = '아쉬워요! 한 번 더 도전해봐요 🌱';
+        fb.textContent = '다시 생각해 볼까요? 🌱 문제를 크게 읽어 보세요!';
         fb.className = 'match-feedback show ng';
-        setTimeout(() => { btn.classList.remove('wrong'); btn.removeAttribute('data-tried'); fb.className = 'match-feedback'; }, 900);
+        setTimeout(() => { btn.classList.remove('wrong'); fb.className = 'match-feedback'; }, 900);
         return;
       }
       group.querySelectorAll('.match-btn').forEach(b => b.disabled = true);
       btn.classList.add('wrong');
       group.querySelectorAll('.match-btn').forEach(b => { if(b.getAttribute('data-correct')==='true') b.classList.add('correct'); });
-      fb.textContent = '아쉬워요! 정답을 확인해보세요 😊';
-      fb.className = 'match-feedback show ng';
+      fb.innerHTML = '정답을 확인해 봐요 😊 왜 틀렸는지 읽어 보세요!'; fb.className = 'find-feedback show ng';fb.className = 'match-feedback show ng';
       matchDone[idx] = true;
     }
     if (matchDone[0] && matchDone[1] && matchDone[2]) {
@@ -274,25 +275,30 @@
     if (isWrong) {
       document.querySelectorAll('.friend-btn').forEach(b => b.disabled = true);
       btn.classList.add('correct');
-      fb.innerHTML = '정답이에요! 🎉 지유가 틀렸어요.<br><strong>문단</strong>은 여러 <strong>문장</strong>이 모인 글의 덩어리예요. 낱말이 아니에요!';
+      btn.innerHTML = '<span class="friend-name">지유 😊</span> "문단은 여러 낱말이 모인 덩어리가 아니라, 여러 문장이 모인 글의 덩어리야."';
+      fb.innerHTML = '잘했어요! 🎉 지유가 틀렸어요.';
       fb.className = 'find-feedback show ok';
       findCorrect = true;
     } else {
-      if (!btn.dataset.tried) {
-        btn.dataset.tried = '1';
+      if (!window._friendWrong) window._friendWrong = 0;
+      window._friendWrong++;
+      if (window._friendWrong === 1) {
         btn.classList.add('wrong');
-        fb.innerHTML = '아쉬워요! 한 번 더 도전해봐요 🌱';
+        btn.disabled = true;
+        fb.innerHTML = '다시 생각해 볼까요? 🌱 문제를 크게 읽어 보세요!';
         fb.className = 'find-feedback show ng';
-        setTimeout(() => { btn.classList.remove('wrong'); btn.removeAttribute('data-tried'); fb.className = 'find-feedback'; }, 900);
-        document.querySelectorAll('.friend-btn').forEach(b => b.disabled = false);
+        setTimeout(() => { btn.classList.remove('wrong'); }, 700);
         return;
       }
       document.querySelectorAll('.friend-btn').forEach(b => b.disabled = true);
       btn.classList.add('wrong');
       document.querySelectorAll('.friend-btn').forEach(b => {
-        if(b.onclick.toString().includes('true')) b.classList.add('correct');
+        if (b.onclick.toString().includes('true')) {
+          b.classList.add('correct');
+          b.innerHTML = '<span class="friend-name">지유 😊</span> "문단은 여러 낱말이 모인 덩어리가 아니라, 여러 문장이 모인 글의 덩어리야."';
+        }
       });
-      fb.innerHTML = '아쉬워요! 지유가 틀린 친구예요.<br><strong>문단</strong>은 여러 <strong>문장</strong>이 모인 글의 덩어리예요 😊';
+      fb.innerHTML = '정답을 확인해 봐요 😊 왜 틀렸는지 읽어 보세요!';
       fb.className = 'find-feedback show ng';
     }
     document.getElementById('next2').disabled = false;
@@ -305,9 +311,14 @@
     document.getElementById('writeInput').classList.toggle('filled', val.length > 0);
     const tags = Array.from(document.querySelectorAll('[style*="border-radius:20px"][style*="#fff3e0"], .write-tag')).map(el => el.textContent.trim());
     const matched = tags.filter(w => val.includes(w));
+    const ok = matched.length >= 2 && val.replace(/\s/g, '').length >= 10 && val.trim().split(/\s+/).length >= 3;
     const warn = document.getElementById('writeWarn');
-    if (warn) warn.style.display = (val.length === 0 || matched.length >= 2) ? 'none' : 'block';
-    document.getElementById('submitBtn').disabled = val.length === 0 || matched.length < 2;
+    if (warn) {
+      if (val.length === 0) { warn.style.display = 'none'; }
+      else if (!ok) { warn.style.display = 'block'; warn.style.background = '#fff3e0'; warn.style.color = '#e65100'; warn.textContent = '오늘 배운 단어를 넣어 3단어 + 10글자 이상 써 봐요 🌱'; }
+      else { warn.style.display = 'block'; warn.style.background = '#e8f5e9'; warn.style.color = '#2e7d32'; warn.textContent = '좋아요! 제출할 수 있어요 😊'; }
+    }
+    document.getElementById('submitBtn').disabled = !ok;
   }
 
   function goTo(n) {
@@ -321,12 +332,12 @@
     document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
     document.getElementById('screen4').classList.add('active');
     document.getElementById('mySentence').textContent = document.getElementById('writeInput').value.trim();
-    const total = matchCorrect + (findCorrect ? 1 : 0);
-    const pct = Math.round((total / 4) * 100);
-    document.getElementById('scoreNum').textContent = pct;
+    document.getElementById('scoreNum').style.display = 'none';
+    const pct_el = document.querySelector('.result-score > div:nth-child(2)');
+    if (pct_el) pct_el.style.display = 'none';
     document.getElementById('statMatch').textContent = matchCorrect + '/3';
     document.getElementById('statFind').textContent = findCorrect ? '✅' : '❌';
-    document.getElementById('scoreLabel').textContent = pct === 100 ? '완벽해요! 🌟' : pct >= 75 ? '잘했어요! 👍' : '다시 해봐요! 💪';
+    document.getElementById('scoreLabel').textContent = '잘했어요! 오늘 어휘 미션 완료! 🌱';
     updateProgress(4);
     window.scrollTo(0, 0);
   }

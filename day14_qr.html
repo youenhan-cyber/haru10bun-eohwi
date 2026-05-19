@@ -149,6 +149,8 @@
       <div class="write-example-hint">참고해도 좋아요 👇</div>
       <div class="write-example">예) 할머니를 줄여서 할매라고 하는 것이 줄임말이에요.</div>
       <textarea class="write-textarea" id="writeInput" placeholder="나만의 문장을 써봐요..." oninput="checkWrite()"></textarea>
+      <div id="writeWarn" style="display:none;margin-top:8px;padding:10px 14px;background:#fff3e0;border-radius:10px;font-size:13px;color:#e65100;">✏️ 오늘 배운 단어를 넣어야 제출할 수 있어요!</div>
+      <div id="writeWarn" style="display:none;margin-top:8px;padding:10px 14px;background:#fff3e0;border-radius:10px;font-size:13px;color:#e65100;">✏️ 단어를 2개 이상 넣어야 제출할 수 있어요!</div>
     </div>
     <button class="submit-btn" id="submitBtn" disabled onclick="goToResult()">제출하기 →</button>
   </div>
@@ -180,18 +182,53 @@
 </div>
 <script>let correctCount=0,answered=[false,false,false];
   function checkAnswer(q,btn,isCorrect){
-    document.querySelectorAll("#opts"+q+" .option-btn").forEach(b=>b.disabled=true);
-    if(isCorrect){btn.classList.add("correct");if(!answered[q-1]){correctCount++;answered[q-1]=true;}}
-    else{btn.classList.add("wrong");document.querySelectorAll("#opts"+q+" .option-btn").forEach(b=>{if(b.getAttribute("data-correct")==="true")b.classList.add("correct");});answered[q-1]=true;}
-    const fb=document.getElementById("fb"+q);fb.classList.add("show");
-    if(!isCorrect){fb.style.background="#ffebee";fb.style.color="#c62828";fb.textContent="아쉬워요! 정답을 확인해보세요 😊";}
-    document.getElementById("next"+q).disabled=false;
-    document.getElementById("hint"+q).classList.add("active");
+    if(isCorrect){
+      document.querySelectorAll("#opts"+q+" .option-btn").forEach(b=>b.disabled=true);
+      btn.classList.add("correct");
+      if(!answered[q-1]){correctCount++;answered[q-1]=true;}
+      const fb=document.getElementById("fb"+q);fb.classList.add("show");
+      document.getElementById("next"+q).disabled=false;
+      document.getElementById("hint"+q).classList.add("active");
+    }else{
+      if(!window._wrongCnt)window._wrongCnt={};
+      const _wk=("q"+q);
+      if(!window._wrongCnt[_wk]){
+        window._wrongCnt[_wk]=1;
+        btn.classList.add("wrong");
+        const fb=document.getElementById("fb"+q);
+        fb.classList.add("show");fb.style.background="#fff3e0";fb.style.color="#e65100";
+        fb.textContent="다시 생각해 볼까요? 🌱 문제를 크게 읽어 보세요!";
+        setTimeout(()=>{btn.classList.remove("wrong");fb.classList.remove("show");},900);
+        return;
+      }
+      document.querySelectorAll("#opts"+q+" .option-btn").forEach(b=>b.disabled=true);
+      btn.classList.add("wrong");
+      document.querySelectorAll("#opts"+q+" .option-btn").forEach(b=>{if(b.getAttribute("data-correct")==="true")b.classList.add("correct");});
+      answered[q-1]=true;
+      const fb=document.getElementById("fb"+q);fb.classList.add("show");
+      fb.style.background="#ffebee";fb.style.color="#c62828";fb.textContent="정답을 확인해 봐요 😊 소리 내어 한 번 읽어 보면 더 잘 기억나요!";
+      document.getElementById("next"+q).disabled=false;
+      document.getElementById("hint"+q).classList.add("active");
+    }
   }
-  function checkWrite(){const val=document.getElementById("writeInput").value.trim();document.getElementById("writeInput").classList.toggle("filled",val.length>0);document.getElementById("submitBtn").disabled=val.length===0;}
+  function checkWrite(){
+    const val=document.getElementById("writeInput").value.trim();
+    document.getElementById("writeInput").classList.toggle("filled",val.length>0);
+    const wordEl=document.querySelector(".write-word");
+    const word=wordEl?wordEl.textContent.trim():"";
+    const hasWord=word&&val.includes(word);
+    const ok=hasWord&&val.replace(/\s/g,'').length>=10&&val.trim().split(/\s+/).length>=3;
+    const warnEl=document.getElementById("writeWarn");
+    if(warnEl){
+      if(val.length===0){warnEl.style.display="none";}
+      else if(!ok){warnEl.style.display="block";warnEl.style.background="#fff3e0";warnEl.style.color="#e65100";warnEl.textContent="오늘 배운 단어를 넣어 3단어 + 10글자 이상 써 봐요 🌱";}
+      else{warnEl.style.display="block";warnEl.style.background="#e8f5e9";warnEl.style.color="#2e7d32";warnEl.textContent="좋아요! 제출할 수 있어요 😊";}
+    }
+    document.getElementById("submitBtn").disabled=!ok;
+  }
   function goTo(n){document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active"));document.getElementById("screen"+n).classList.add("active");updateProgress(n);window.scrollTo(0,0);}
-  function goToResult(){document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active"));document.getElementById("screen5").classList.add("active");document.getElementById("mySentence").textContent=document.getElementById("writeInput").value.trim();const pct=Math.round((correctCount/3)*100);document.getElementById("scoreNum").textContent=pct;document.getElementById("statCorrect").textContent=correctCount+"/3";document.getElementById("scoreLabel").textContent=pct===100?"완벽해요! 🌟":pct>=66?"잘했어요! 👍":"다시 해봐요! 💪";updateProgress(5);window.scrollTo(0,0);}
+  function goToResult(){document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active"));document.getElementById("screen5").classList.add("active");document.getElementById("mySentence").textContent=document.getElementById("writeInput").value.trim();document.getElementById("scoreNum").style.display="none";document.querySelector(".result-score div:nth-child(2)") && (document.querySelector(".result-score div:nth-child(2)").style.display="none");document.getElementById("scoreLabel").textContent="잘했어요! 오늘 어휘 미션 완료! 🌱";document.getElementById("statCorrect").textContent=correctCount+"/3";updateProgress(5);window.scrollTo(0,0);}
   function updateProgress(current){for(let i=1;i<=5;i++){const c=document.getElementById("s"+i);if(!c)continue;c.classList.remove("active","done");if(i<current)c.classList.add("done");else if(i===current)c.classList.add("active");}for(let i=1;i<=4;i++){const l=document.getElementById("l"+i);if(!l)continue;l.classList.toggle("done",i<current);}}
-  function retry(){correctCount=0;answered=[false,false,false];document.querySelectorAll(".option-btn").forEach(b=>{b.disabled=false;b.classList.remove("correct","wrong");});document.querySelectorAll(".feedback").forEach(f=>{f.classList.remove("show");f.style.background="";f.style.color="";});document.querySelectorAll(".next-btn").forEach(b=>b.disabled=true);document.getElementById("writeInput").value="";document.getElementById("submitBtn").disabled=true;goTo(1);}</script>
+  function retry(){window._wrongCnt={};window._wrongCnt={};correctCount=0;answered=[false,false,false];document.querySelectorAll(".option-btn").forEach(b=>{b.disabled=false;b.classList.remove("correct","wrong");});document.querySelectorAll(".feedback").forEach(f=>{f.classList.remove("show");f.style.background="";f.style.color="";});document.querySelectorAll(".next-btn").forEach(b=>b.disabled=true);document.getElementById("writeInput").value="";document.getElementById("submitBtn").disabled=true;goTo(1);}</script>
 </body>
 </html>

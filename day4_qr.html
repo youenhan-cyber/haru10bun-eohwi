@@ -163,6 +163,8 @@
       <div class="write-example-hint">참고해도 좋아요 👇</div>
       <div class="write-example">예) 고양이와 강아지를 비교하면 둘 다 털이 있지만 소리가 달라요.</div>
       <textarea class="write-textarea" id="writeInput" placeholder="나만의 문장을 써봐요..." oninput="checkWrite()"></textarea>
+      <div id="writeWarn" style="display:none;margin-top:8px;padding:10px 14px;background:#fff3e0;border-radius:10px;font-size:13px;color:#e65100;">✏️ 오늘 배운 단어를 넣어야 제출할 수 있어요!</div>
+      <div id="writeWarn" style="display:none;margin-top:8px;padding:10px 14px;background:#fff3e0;border-radius:10px;font-size:13px;color:#e65100;">✏️ 단어를 2개 이상 넣어야 제출할 수 있어요!</div>
       <div class="write-hint" id="writeHint">다 썼으면 제출해요!</div>
     </div>
     <button class="submit-btn" id="submitBtn" disabled onclick="goToResult()">제출하기 →</button>
@@ -205,18 +207,31 @@
 
   function checkAnswer(q, btn, isCorrect) {
     const opts = document.querySelectorAll('#opts' + q + ' .option-btn');
-    opts.forEach(b => b.disabled = true);
     if (isCorrect) {
+      opts.forEach(b => b.disabled = true);
       btn.classList.add('correct');
       document.getElementById('fb' + q).classList.add('show');
       if (!answered[q-1]) { correctCount++; answered[q-1] = true; }
     } else {
+      if (!window._wrongCnt) window._wrongCnt = {};
+      const _wk45 = 'q' + q;
+      if (!window._wrongCnt[_wk45]) {
+        window._wrongCnt[_wk45] = 1;
+        btn.classList.add('wrong');
+        document.getElementById('fb' + q).classList.add('show');
+        document.getElementById('fb' + q).style.background = '#fff3e0';
+        document.getElementById('fb' + q).style.color = '#e65100';
+        document.getElementById('fb' + q).textContent = '다시 생각해 볼까요? 🌱 문제를 크게 읽어 보세요!';
+        setTimeout(() => { btn.classList.remove('wrong'); document.getElementById('fb' + q).classList.remove('show'); }, 900);
+        return;
+      }
+      opts.forEach(b => b.disabled = true);
       btn.classList.add('wrong');
       opts.forEach(b => { if (b.onclick.toString().includes('true')) b.classList.add('correct'); });
       document.getElementById('fb' + q).classList.add('show');
       document.getElementById('fb' + q).style.background = '#ffebee';
       document.getElementById('fb' + q).style.color = '#c62828';
-      document.getElementById('fb' + q).textContent = '아쉬워요! 정답을 확인해보세요 😊';
+      document.getElementById('fb' + q).textContent = '정답을 확인해 봐요 😊 소리 내어 한 번 읽어 보면 더 잘 기억나요!';
       answered[q-1] = true;
     }
     document.getElementById('next' + q).disabled = false;
@@ -226,7 +241,17 @@
   function checkWrite() {
     const val = document.getElementById('writeInput').value.trim();
     document.getElementById('writeInput').classList.toggle('filled', val.length > 0);
-    document.getElementById('submitBtn').disabled = val.length === 0;
+    const wordEl = document.querySelector('.write-word');
+    const word = wordEl ? wordEl.textContent.trim() : '';
+    const hasWord = word && val.includes(word);
+    const ok = hasWord && val.replace(/\s/g, '').length >= 10 && val.trim().split(/\s+/).length >= 3;
+    const warnEl = document.getElementById('writeWarn');
+    if (warnEl) {
+      if (val.length === 0) { warnEl.style.display = 'none'; }
+      else if (!ok) { warnEl.style.display = 'block'; warnEl.style.background = '#fff3e0'; warnEl.style.color = '#e65100'; warnEl.textContent = '오늘 배운 단어를 넣어 3단어 + 10글자 이상 써 봐요 🌱'; }
+      else { warnEl.style.display = 'block'; warnEl.style.background = '#e8f5e9'; warnEl.style.color = '#2e7d32'; warnEl.textContent = '좋아요! 제출할 수 있어요 😊'; }
+    }
+    document.getElementById('submitBtn').disabled = !ok;
   }
 
   function goTo(n) {
@@ -241,12 +266,11 @@
     document.getElementById('screen5').classList.add('active');
     const sentence = document.getElementById('writeInput').value.trim();
     document.getElementById('mySentence').textContent = sentence;
-    const pct = Math.round((correctCount / 3) * 100);
-    document.getElementById('scoreNum').textContent = pct;
+    document.getElementById('scoreNum').style.display = 'none';
+    const pct_el2 = document.querySelector('.result-score > div:nth-child(2)');
+    if (pct_el2) pct_el2.style.display = 'none';
     document.getElementById('statCorrect').textContent = correctCount + '/3';
-    if (pct === 100) document.getElementById('scoreLabel').textContent = '완벽해요! 🌟';
-    else if (pct >= 66) document.getElementById('scoreLabel').textContent = '잘했어요! 👍';
-    else document.getElementById('scoreLabel').textContent = '다시 해봐요! 💪';
+    document.getElementById('scoreLabel').textContent = '잘했어요! 오늘 어휘 미션 완료! 🌱';
     updateProgress(5);
     window.scrollTo(0, 0);
   }

@@ -41,7 +41,6 @@
   .feedback.show { display: block; }
   .feedback.ok { background: #e8f5e9; color: #1b5e20; }
   .feedback.ng { background: #ffebee; color: #c62828; }
-  .words-box { background: #e8f5e9; border-radius: 10px; padding: 12px 14px; font-size: 13px; color: #1b5e20; margin-bottom: 16px; line-height: 1.7; }
   .friends-grid { display: flex; flex-direction: column; gap: 10px; }
   .friend-btn { padding: 16px 18px; border: 1.5px solid #e0e0e0; border-radius: 12px; background: white; font-size: 14px; color: #333; text-align: left; cursor: pointer; transition: all 0.2s; font-family: inherit; line-height: 1.5; }
   .friend-btn:hover:not(:disabled) { border-color: #e91e63; background: #fce4ec; }
@@ -58,7 +57,8 @@
   .write-combo { display: flex; align-items: center; justify-content: center; gap: 10px; margin: 14px 0; }
   .write-word-badge { background: #1a1a1a; color: white; padding: 8px 18px; border-radius: 20px; font-size: 17px; font-weight: 800; }
   .write-plus { font-size: 20px; font-weight: 800; color: #7b1fa2; }
-  .write-example { text-align: center; font-size: 13px; color: #999; margin-bottom: 14px; }
+  .write-example-hint { text-align: center; font-size: 12px; color: #888; margin-bottom: 6px; }
+  .write-example { text-align: center; font-size: 13px; color: #4caf50; background: #f0fdf4; border-radius: 8px; padding: 8px 12px; margin-bottom: 16px; line-height: 1.6; }
   .write-textarea { width: 100%; min-height: 100px; border: 1.5px solid #e0e0e0; border-radius: 12px; padding: 14px; font-size: 15px; font-family: inherit; resize: none; outline: none; transition: border-color 0.2s; }
   .write-textarea:focus, .write-textarea.filled { border-color: #7b1fa2; }
   .next-btn { width: 100%; padding: 18px; background: #1a1a1a; color: white; border: none; border-radius: 14px; font-size: 16px; font-weight: 700; cursor: pointer; margin-top: 20px; font-family: inherit; }
@@ -79,13 +79,13 @@
   .my-sentence-card { background: white; border-radius: 14px; padding: 20px; margin-bottom: 16px; }
   .my-sentence-title { font-size: 13px; color: #999; margin-bottom: 10px; }
   .my-sentence-text { font-size: 17px; font-weight: 600; color: #1a1a1a; }
-  .kakao-card { background: #fffde7; border: 1.5px solid #ffe082; border-radius: 14px; padding: 20px; text-align: center; margin-bottom: 16px; }
-  .kakao-card h3 { font-size: 15px; font-weight: 700; color: #f57f17; margin-bottom: 6px; }
-  .kakao-card p { font-size: 13px; color: #795548; line-height: 1.6; }
-  .kakao-btn { width: 100%; padding: 16px; background: #FEE500; color: #3c1e1e; border: none; border-radius: 12px; font-size: 15px; font-weight: 700; cursor: pointer; margin-top: 12px; font-family: inherit; }
+  .kakao-card { background: #fffbeb; border: 1.5px solid #f6ad55; border-radius: 14px; padding: 20px; text-align: center; margin-bottom: 16px; }
+  .kakao-card h3 { font-size: 15px; font-weight: 700; color: #b45309; margin-bottom: 6px; }
+  .kakao-card p { font-size: 13px; color: #78350f; line-height: 1.7; margin-bottom: 14px; }
+  .kakao-btn { width: 100%; padding: 16px; background: #FEE500; color: #3c1e1e; border: none; border-radius: 12px; font-size: 15px; font-weight: 700; cursor: pointer; font-family: inherit; }
   .app-card { background: #1a1a1a; border-radius: 14px; padding: 24px 20px; text-align: center; margin-bottom: 16px; }
   .app-card h3 { font-size: 17px; font-weight: 800; color: white; margin-bottom: 6px; }
-  .app-card p { font-size: 13px; color: #aaa; line-height: 1.6; }
+  .app-card p { font-size: 13px; color: #aaa; line-height: 1.6; margin-bottom: 0; }
   .highlight { color: #27ae60; font-weight: 700; }
   .app-btn { width: 100%; padding: 16px; background: #FEE500; color: #3c1e1e; border: none; border-radius: 12px; font-size: 15px; font-weight: 700; cursor: pointer; margin-top: 12px; font-family: inherit; }
   .retry-btn { width: 100%; padding: 16px; background: transparent; color: #999; border: 1.5px solid #e0e0e0; border-radius: 12px; font-size: 15px; font-weight: 600; cursor: pointer; font-family: inherit; }
@@ -98,8 +98,8 @@
 
 <div class="header">
   <div class="day-badge">🌱 30일차 실전 QR</div>
-  <h1>초4 국어 어휘<br>실전 체험</h1>
-  <p>상황 퀴즈 + 틀린 친구 찾기 + 문장 만들기<br>선생님이 직접 피드백해줘요!</p>
+  <h1>초4 국어 어휘<br>30일차 실전</h1>
+  <p>상황 퀴즈 + 틀린 친구 찾기 + 문장 만들기<br>오늘 배운 단어로 한 문장을 써 보세요 🌱</p>
 </div>
 
 <div class="progress-bar">
@@ -116,14 +116,12 @@
 
 <div class="content">
 
-  <!-- 상황 퀴즈 1 -->
   <div class="screen active" id="screen1">
     <div class="card">
       <div class="question-meta">문제 1 / 4</div>
       <span class="question-tag tag-situation">🎯 상황 퀴즈</span>
       <div class="section-title">글을 읽고 알맞은 단어를 골라요!</div>
       <div class="section-sub">각 상황에 맞는 단어는 무엇일까요?</div>
-
       <div class="situation-box">
         <div class="situation-label">상황 1</div>
         <div class="situation-text">선생님이 말씀하셨어요. "이 글에서 글쓴이가 가장 중요하게 전하고 싶은 것은 무엇일까요? 글 전체를 읽고 찾아보세요." 선생님이 찾으라고 한 것은?</div>
@@ -135,9 +133,7 @@
         <button class="option-btn" onclick="checkSit(1,'a',this,false)">④ 배경</button>
       </div>
       <div class="feedback" id="fb1a"></div>
-
       <div class="divider"></div>
-
       <div class="situation-box">
         <div class="situation-label">상황 2</div>
         <div class="situation-text">수호는 지난 여름 방학에 제주도로 여행을 갔어요. 바다에서 수영도 하고, 한라산도 올랐어요. 수호가 직접 겪은 이 일을 무엇이라고 할까요?</div>
@@ -154,14 +150,12 @@
     <button class="next-btn" id="next1" disabled onclick="goTo(2)">다음 문제 →</button>
   </div>
 
-  <!-- 상황 퀴즈 2 -->
   <div class="screen" id="screen2">
     <div class="card">
       <div class="question-meta">문제 2 / 4</div>
       <span class="question-tag tag-situation">🎯 상황 퀴즈</span>
       <div class="section-title">글을 읽고 알맞은 단어를 골라요!</div>
       <div class="section-sub">각 상황에 맞는 단어는 무엇일까요?</div>
-
       <div class="situation-box">
         <div class="situation-label">상황 3</div>
         <div class="situation-text">이야기 속에서 주인공 토끼와 거북이가 달리기 경주를 해요. 경주가 벌어지는 곳은 넓은 들판이고, 해가 쨍쨍한 낮이에요. 이 이야기에서 "넓은 들판, 낮"은 무엇에 해당할까요?</div>
@@ -173,9 +167,7 @@
         <button class="option-btn" onclick="checkSit(2,'a',this,false)">④ 대화</button>
       </div>
       <div class="feedback" id="fb2a"></div>
-
       <div class="divider"></div>
-
       <div class="situation-box">
         <div class="situation-label">상황 4</div>
         <div class="situation-text">민서는 책을 읽은 뒤 선생님께서 내주신 숙제를 했어요. 숙제는 책을 읽으면서 든 느낌이나 생각, 그리고 배운 점을 글로 쓰는 것이었어요. 민서가 쓴 글은 무엇일까요?</div>
@@ -192,26 +184,16 @@
     <button class="next-btn" id="next2" disabled onclick="goTo(3)">다음 문제 →</button>
   </div>
 
-  <!-- 틀린 친구 찾기 -->
   <div class="screen" id="screen3">
     <div class="card">
       <div class="question-meta">문제 3 / 4</div>
       <span class="question-tag tag-find">🔍 틀린 친구 찾기</span>
       <div class="section-title">4명 중 <span style="color:#e91e63">틀린 설명</span>을 한 친구는?</div>
-
       <div class="friends-grid">
-        <button class="friend-btn" data-wrong="true" onclick="checkFriend(this,true)">
-          <span class="friend-name">민준 😄</span> "인물은 이야기 속 사건이야."
-        </button>
-        <button class="friend-btn" data-wrong="false" onclick="checkFriend(this,false)">
-          <span class="friend-name">지유 😊</span> "배경은 일이 일어난 곳이나 상황이야."
-        </button>
-        <button class="friend-btn" data-wrong="false" onclick="checkFriend(this,false)">
-          <span class="friend-name">도운 😎</span> "문장은 생각을 글로 나타낸 거야."
-        </button>
-        <button class="friend-btn" data-wrong="false" onclick="checkFriend(this,false)">
-          <span class="friend-name">에나 😁</span> "대화는 인물이 주고받는 말이야."
-        </button>
+        <button class="friend-btn" data-wrong="true" onclick="checkFriend(this,true)"><span class="friend-name">민준 😄</span> "인물은 이야기 속 사건이야."</button>
+        <button class="friend-btn" data-wrong="false" onclick="checkFriend(this,false)"><span class="friend-name">지유 😊</span> "배경은 일이 일어난 곳이나 상황이야."</button>
+        <button class="friend-btn" data-wrong="false" onclick="checkFriend(this,false)"><span class="friend-name">도운 😎</span> "문장은 생각을 글로 나타낸 거야."</button>
+        <button class="friend-btn" data-wrong="false" onclick="checkFriend(this,false)"><span class="friend-name">에나 😁</span> "대화는 인물이 주고받는 말이야."</button>
       </div>
       <div class="find-feedback" id="findFeedback"></div>
     </div>
@@ -219,7 +201,6 @@
     <button class="next-btn" id="next3" disabled onclick="goTo(4)">다음 문제 →</button>
   </div>
 
-  <!-- 문장 만들기 -->
   <div class="screen" id="screen4">
     <div class="card">
       <div class="question-meta">문제 4 / 4</div>
@@ -230,13 +211,15 @@
         <span class="write-plus">+</span>
         <span class="write-word-badge">행동</span>
       </div>
+      <div class="write-example-hint">참고해도 좋아요 👇</div>
       <div class="write-example">예) 이 이야기의 인물은 용감한 행동을 했어요.</div>
-      <textarea class="write-textarea" id="writeInput" placeholder="두 단어를 모두 넣어서 문장을 써봐요..." oninput="checkWrite()"></textarea>
+      <textarea class="write-textarea" id="writeInput" placeholder="나만의 문장을 써봐요..." oninput="checkWrite()"></textarea>
+      <div id="writeWarn" style="display:none;margin-top:8px;padding:10px 14px;background:#fff3e0;border-radius:10px;font-size:13px;color:#e65100;">✏️ 오늘 배운 단어를 넣어야 제출할 수 있어요!</div>
+      <div id="writeWarn" style="display:none;margin-top:8px;padding:10px 14px;background:#fff3e0;border-radius:10px;font-size:13px;color:#e65100;">✏️ 단어를 2개 이상 넣어야 제출할 수 있어요!</div>
     </div>
     <button class="submit-btn" id="submitBtn" disabled onclick="goToResult()">제출하기 →</button>
   </div>
 
-  <!-- 결과 -->
   <div class="screen" id="screen5">
     <div class="result-score">
       <div class="score-number" id="scoreNum">100</div>
@@ -249,18 +232,18 @@
       <div class="stat-card"><div class="stat-number">✍️</div><div class="stat-label">문장 완성</div></div>
     </div>
     <div class="my-sentence-card">
-      <div class="my-sentence-title">🔥 내가 만든 문장</div>
+      <div class="my-sentence-title">✍️ 내가 만든 문장</div>
       <div class="my-sentence-text" id="mySentence"></div>
     </div>
     <div class="kakao-card">
       <h3>📸 부모님께 보여주세요!</h3>
-      <p>이 화면을 캡처해서<br>카카오채널로 보내주시면<br>선생님이 직접 피드백해드려요 😊</p>
-      <button class="kakao-btn" onclick="window.open('https://pf.kakao.com/_xaFxmxb','_blank')">💬 하루10분국어어휘 채널 바로가기</button>
+      <p>이 화면을 캡처해서<br>카카오채널로 보내주시면<br>선생님이 직접 피드백해드려요 😊<br><br>(런칭 기간 동안 피드백 5회 제공)</p>
+      <button class="kakao-btn" onclick="window.open('https://pf.kakao.com/_sVUKX','_blank')">📲 카카오채널 가기</button>
     </div>
     <div class="app-card">
-      <h3>🌱 오늘도 잘했어요!<br>앱 출시를 기다려주세요</h3>
-      <p>매일 새로운 어휘와 독해 문제로<br><span class="highlight">실력을 쌓을 수 있는 앱</span>이 곧 출시돼요!</p>
-      <button class="app-btn" onclick="window.open('https://pf.kakao.com/_xaFxmxb','_blank')">📚 카카오채널 추가하기 🧡</button>
+      <h3>오늘도 잘했어요! 🌱</h3>
+      <p>Vol.2 심화편 & 어휘 앱 곧 출시 예정!<br>카카오채널 추가하고 소식 받아보세요</p>
+      <button class="app-btn" onclick="window.open('https://pf.kakao.com/_sVUKX','_blank')">📲 카카오채널 추가하기 💛</button>
     </div>
     <button class="retry-btn" onclick="retry()">다시 도전하기 🔄</button>
   </div>
@@ -270,40 +253,81 @@
   let sitCorrect=0, sitDone={'1a':false,'1b':false,'2a':false,'2b':false}, findCorrect=false;
   function checkSit(q,sub,btn,isCorrect){
     const key=q+sub, groupId='opts'+key;
-    document.querySelectorAll('#'+groupId+' .option-btn').forEach(b=>b.disabled=true);
     const fb=document.getElementById('fb'+key);
-    if(isCorrect){btn.classList.add('correct');fb.textContent='정답이에요! 🎉';fb.className='feedback show ok';if(!sitDone[key]){sitCorrect++;sitDone[key]=true;}}
-    else{btn.classList.add('wrong');document.querySelectorAll('#'+groupId+' .option-btn').forEach(b=>{if(b.onclick.toString().includes('true'))b.classList.add('correct');});fb.textContent='아쉬워요! 정답을 확인해보세요 😊';fb.className='feedback show ng';sitDone[key]=true;}
+    if(isCorrect){
+      document.querySelectorAll('#'+groupId+' .option-btn').forEach(b=>b.disabled=true);
+      btn.classList.add('correct');fb.textContent='잘했어요! 🎉';fb.className='feedback show ok';
+      if(!sitDone[key]){sitCorrect++;sitDone[key]=true;}
+    }else{
+      if(!window._wrongCnt)window._wrongCnt={};
+      const _wsk=q+sub;
+      if(!window._wrongCnt[_wsk]){
+        window._wrongCnt[_wsk]=1;btn.classList.add('wrong');
+        fb.textContent='다시 생각해 볼까요? 🌱 문제를 크게 읽어 보세요!';
+        fb.className='feedback show ng';fb.style.background='#fff3e0';fb.style.color='#e65100';
+        setTimeout(()=>{btn.classList.remove('wrong');fb.className='feedback';fb.style.background='';fb.style.color='';},900);
+        return;
+      }
+      document.querySelectorAll('#'+groupId+' .option-btn').forEach(b=>b.disabled=true);
+      btn.classList.add('wrong');
+      document.querySelectorAll('#'+groupId+' .option-btn').forEach(b=>{if(b.onclick.toString().includes('true'))b.classList.add('correct');});
+      fb.innerHTML = '정답을 확인해 봐요 😊 왜 틀렸는지 읽어 보세요!'; fb.className = 'find-feedback show ng';fb.className='feedback show ng';fb.style.background='';fb.style.color='';sitDone[key]=true;
+    }
     if(q===1&&sitDone['1a']&&sitDone['1b']){document.getElementById('next1').disabled=false;const h=document.getElementById('hint1');h.textContent='완료! 다음으로 넘어가요 🎉';h.classList.add('active');}
     if(q===2&&sitDone['2a']&&sitDone['2b']){document.getElementById('next2').disabled=false;const h=document.getElementById('hint2');h.textContent='완료! 다음으로 넘어가요 🎉';h.classList.add('active');}
   }
   function checkFriend(btn,isWrong){
-    document.querySelectorAll('.friend-btn').forEach(b=>b.disabled=true);
     const fb=document.getElementById('findFeedback');
-    if(isWrong){btn.classList.add('correct');fb.innerHTML='정답이에요! 🎉 민준이가 틀렸어요.<br><strong>인물</strong>은 이야기 속에 나오는 <strong>사람이나 동물</strong>이에요. 사건이 아니에요!';fb.className='find-feedback show ok';findCorrect=true;}
-    else{btn.classList.add('wrong');document.querySelectorAll('.friend-btn').forEach(b=>{if(b.getAttribute('data-wrong')==='true')b.classList.add('correct');});fb.innerHTML='아쉬워요! 민준이가 틀린 친구예요.<br><strong>인물</strong>은 이야기 속에 나오는 <strong>사람이나 동물</strong>이에요 😊';fb.className='find-feedback show ng';}
+    if(isWrong){
+      document.querySelectorAll('.friend-btn').forEach(b=>b.disabled=true);btn.classList.add('correct');btn.innerHTML='<span class="friend-name">민준 😄</span> "인물은 이야기 속 사건이 아니라, 이야기 속에 나오는 사람이나 동물이야."';fb.innerHTML='잘했어요! 🎉 민준이가 틀렸어요.';fb.className='find-feedback show ok';findCorrect=true;
+    }else{
+      if(!window._friendWrong)window._friendWrong=0;
+      window._friendWrong++;
+      if(window._friendWrong===1){
+        btn.classList.add('wrong');btn.disabled=true;
+        fb.innerHTML='다시 생각해 볼까요? 🌱 문제를 크게 읽어 보세요!';fb.className='find-feedback show ng';
+        setTimeout(()=>{btn.classList.remove('wrong');},700);
+        return;
+      }
+      document.querySelectorAll('.friend-btn').forEach(b=>b.disabled=true);
+      btn.classList.add('wrong');document.querySelectorAll('.friend-btn').forEach(b=>{if(b.getAttribute('data-wrong')==='true'){b.classList.add('correct');b.innerHTML='<span class="friend-name">민준 😄</span> "인물은 이야기 속 사건이 아니라, 이야기 속에 나오는 사람이나 동물이야."';}});
+      fb.innerHTML='정답을 확인해 봐요 😊 왜 틀렸는지 읽어 보세요!';fb.className='find-feedback show ng';
+    }
     document.getElementById('next3').disabled=false;
     const h=document.getElementById('hint3');h.textContent='다음으로 넘어가요!';h.classList.add('active');
   }
-  function checkWrite(){const val=document.getElementById('writeInput').value.trim();document.getElementById('writeInput').classList.toggle('filled',val.length>0);document.getElementById('submitBtn').disabled=val.length===0;}
+  function checkWrite(){
+    const val=document.getElementById('writeInput').value.trim();
+    document.getElementById('writeInput').classList.toggle('filled',val.length>0);
+    const badges=Array.from(document.querySelectorAll('.write-word-badge')).map(el=>el.textContent.trim());
+    const matched=badges.filter(w=>val.includes(w));
+    const ok=matched.length>=2&&val.replace(/\s/g,'').length>=10&&val.trim().split(/\s+/).length>=3;
+    const warn=document.getElementById('writeWarn');
+    if(warn){
+      if(val.length===0){warn.style.display='none';}
+      else if(!ok){warn.style.display='block';warn.style.background='#fff3e0';warn.style.color='#e65100';warn.textContent='오늘 배운 단어를 넣어 3단어 + 10글자 이상 써 봐요 🌱';}
+      else{warn.style.display='block';warn.style.background='#e8f5e9';warn.style.color='#2e7d32';warn.textContent='좋아요! 제출할 수 있어요 😊';}
+    }
+    document.getElementById('submitBtn').disabled=!ok;
+  }
   function goTo(n){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById('screen'+n).classList.add('active');updateProgress(n);window.scrollTo(0,0);}
   function goToResult(){
     document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
     document.getElementById('screen5').classList.add('active');
     document.getElementById('mySentence').textContent=document.getElementById('writeInput').value.trim();
-    const total=sitCorrect+(findCorrect?1:0);
-    const pct=Math.round((total/5)*100);
-    document.getElementById('scoreNum').textContent=pct;
+    document.getElementById('scoreNum').style.display='none';
+    const pct_el=document.querySelector('.result-score > div:nth-child(2)');
+    if(pct_el)pct_el.style.display='none';
     document.getElementById('statSit').textContent=sitCorrect+'/4';
     document.getElementById('statFind').textContent=findCorrect?'✅':'❌';
-    document.getElementById('scoreLabel').textContent=pct===100?'완벽해요! 🌟':pct>=80?'잘했어요! 👍':'다시 해봐요! 💪';
+    document.getElementById('scoreLabel').textContent='잘했어요! 오늘 어휘 미션 완료! 🌱';
     updateProgress(5);window.scrollTo(0,0);
   }
   function updateProgress(current){
     for(let i=1;i<=5;i++){const c=document.getElementById('s'+i);if(!c)continue;c.classList.remove('active','done');if(i<current)c.classList.add('done');else if(i===current)c.classList.add('active');}
     for(let i=1;i<=4;i++){const l=document.getElementById('l'+i);if(!l)continue;l.classList.toggle('done',i<current);}
   }
-  function retry(){
+  function retry(){window._wrongCnt={};window._wrongCnt={};
     sitCorrect=0;sitDone={'1a':false,'1b':false,'2a':false,'2b':false};findCorrect=false;
     document.querySelectorAll('.option-btn,.friend-btn').forEach(b=>{b.disabled=false;b.classList.remove('correct','wrong');});
     document.querySelectorAll('.feedback').forEach(f=>{f.className='feedback';f.textContent='';});

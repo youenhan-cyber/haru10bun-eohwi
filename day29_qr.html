@@ -261,18 +261,20 @@
     if (isCorrect) {
       document.querySelectorAll('#' + groupId + ' .option-btn').forEach(b => b.disabled = true);
       btn.classList.add('correct');
-      fb.textContent = '정답이에요! 🎉';
+      fb.textContent = '잘했어요! 🎉';
       fb.className = 'feedback show ok';
       if (!sitDone[key]) { sitCorrect++; sitDone[key] = true; }
     } else {
-      if (!btn.dataset.tried) {
-        btn.dataset.tried = '1';
+      if (!window._wrongCnt) window._wrongCnt = {};
+      const _wsk = q + sub;
+      if (!window._wrongCnt[_wsk]) {
+        window._wrongCnt[_wsk] = 1;
         btn.classList.add('wrong');
-        fb.textContent = '아쉬워요! 한 번 더 도전해봐요 🌱';
+        fb.textContent = '다시 생각해 볼까요? 🌱 문제를 크게 읽어 보세요!';
         fb.className = 'feedback show ng';
         fb.style.background = '#fff3e0'; fb.style.color = '#e65100';
         setTimeout(() => {
-          btn.classList.remove('wrong'); btn.removeAttribute('data-tried');
+          btn.classList.remove('wrong');
           fb.className = 'feedback'; fb.style.background = ''; fb.style.color = '';
         }, 900);
         return;
@@ -282,8 +284,7 @@
       document.querySelectorAll('#' + groupId + ' .option-btn').forEach(b => {
         if (b.onclick.toString().includes('true')) b.classList.add('correct');
       });
-      fb.textContent = '아쉬워요! 정답을 확인해보세요 😊';
-      fb.className = 'feedback show ng';
+      fb.innerHTML = '정답을 확인해 봐요 😊 왜 틀렸는지 읽어 보세요!'; fb.className = 'find-feedback show ng';fb.className = 'feedback show ng';
       fb.style.background = ''; fb.style.color = '';
       sitDone[key] = true;
     }
@@ -306,31 +307,35 @@
     if (isWrong) {
       document.querySelectorAll('.friend-btn').forEach(b => b.disabled = true);
       btn.classList.add('correct');
-      fb.innerHTML = '정답이에요! 🎉 도운이가 틀렸어요.<br><strong>사과</strong>는 잘못을 <strong>미안하다고 말하는 것</strong>이에요. 칭찬이 아니에요!';
+      btn.innerHTML = '<span class="friend-name">도운 😅</span> "사과는 상대를 칭찬하는 게 아니라, 잘못을 미안하다고 말하는 거야."';
+      fb.innerHTML = '잘했어요! 🎉 도운이가 틀렸어요.';
       fb.className = 'find-feedback show ok';
       findCorrect = true;
     } else {
-      if (!btn.dataset.tried) {
-        btn.dataset.tried = '1';
+      if (!window._friendWrong) window._friendWrong = 0;
+      window._friendWrong++;
+      if (window._friendWrong === 1) {
         btn.classList.add('wrong');
-        fb.innerHTML = '아쉬워요! 한 번 더 도전해봐요 🌱';
+        btn.disabled = true;
+        fb.innerHTML = '다시 생각해 볼까요? 🌱 문제를 크게 읽어 보세요!';
         fb.className = 'find-feedback show ng';
-        setTimeout(() => { btn.classList.remove('wrong'); btn.removeAttribute('data-tried'); fb.className = 'find-feedback'; }, 900);
-        document.querySelectorAll('.friend-btn').forEach(b => b.disabled = false);
+        setTimeout(() => { btn.classList.remove('wrong'); }, 700);
         return;
       }
       document.querySelectorAll('.friend-btn').forEach(b => b.disabled = true);
       btn.classList.add('wrong');
       document.querySelectorAll('.friend-btn').forEach(b => {
-        if (b.getAttribute('data-wrong') === 'true') b.classList.add('correct');
+        if (b.getAttribute('data-wrong') === 'true') {
+          b.classList.add('correct');
+          b.innerHTML = '<span class="friend-name">도운 😅</span> "사과는 상대를 칭찬하는 게 아니라, 잘못을 미안하다고 말하는 거야."';
+        }
       });
-      fb.innerHTML = '아쉬워요! 도운이가 틀린 친구예요.<br><strong>사과</strong>는 잘못을 <strong>미안하다고 말하는 것</strong>이에요 😊';
+      fb.innerHTML = '정답을 확인해 봐요 😊 왜 틀렸는지 읽어 보세요!';
       fb.className = 'find-feedback show ng';
     }
     document.getElementById('next3').disabled = false;
-    const h = document.getElementById('hint3');
-    h.textContent = '다음으로 넘어가요!';
-    h.classList.add('active');
+    document.getElementById('hint3').textContent = '다음으로 넘어가요!';
+    document.getElementById('hint3').classList.add('active');
   }
 
   function checkWrite() {
@@ -338,9 +343,14 @@
     document.getElementById('writeInput').classList.toggle('filled', val.length > 0);
     const badges = Array.from(document.querySelectorAll('.write-word-badge')).map(el => el.textContent.trim());
     const matched = badges.filter(w => val.includes(w));
+    const ok = matched.length >= 2 && val.replace(/\s/g, '').length >= 10 && val.trim().split(/\s+/).length >= 3;
     const warn = document.getElementById('writeWarn');
-    if (warn) warn.style.display = (val.length === 0 || matched.length >= 2) ? 'none' : 'block';
-    document.getElementById('submitBtn').disabled = val.length === 0 || matched.length < 2;
+    if (warn) {
+      if (val.length === 0) { warn.style.display = 'none'; }
+      else if (!ok) { warn.style.display = 'block'; warn.style.background = '#fff3e0'; warn.style.color = '#e65100'; warn.textContent = '오늘 배운 단어를 넣어 3단어 + 10글자 이상 써 봐요 🌱'; }
+      else { warn.style.display = 'block'; warn.style.background = '#e8f5e9'; warn.style.color = '#2e7d32'; warn.textContent = '좋아요! 제출할 수 있어요 😊'; }
+    }
+    document.getElementById('submitBtn').disabled = !ok;
   }
 
   function goTo(n) {
@@ -354,12 +364,12 @@
     document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
     document.getElementById('screen5').classList.add('active');
     document.getElementById('mySentence').textContent = document.getElementById('writeInput').value.trim();
-    const total = sitCorrect + (findCorrect ? 1 : 0);
-    const pct = Math.round((total / 5) * 100);
-    document.getElementById('scoreNum').textContent = pct;
+    document.getElementById('scoreNum').style.display = 'none';
+    const pct_el = document.querySelector('.result-score > div:nth-child(2)');
+    if (pct_el) pct_el.style.display = 'none';
     document.getElementById('statSit').textContent = sitCorrect + '/4';
     document.getElementById('statFind').textContent = findCorrect ? '✅' : '❌';
-    document.getElementById('scoreLabel').textContent = pct === 100 ? '완벽해요! 🌟' : pct >= 80 ? '잘했어요! 👍' : '다시 해봐요! 💪';
+    document.getElementById('scoreLabel').textContent = '잘했어요! 오늘 어휘 미션 완료! 🌱';
     updateProgress(5);
     window.scrollTo(0, 0);
   }

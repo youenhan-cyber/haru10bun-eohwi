@@ -206,23 +206,43 @@ function goStep(screenId,stepNum){
 
 function checkQ(btn,qid,correct,fbId,nextId){
   const screen=btn.closest('.card-wrap');
-  screen.querySelectorAll('.choice').forEach(b=>b.disabled=true);
   const d=qData[qid];
   if(correct){
+    screen.querySelectorAll('.choice').forEach(b=>b.disabled=true);
     btn.classList.add('correct');
     document.getElementById(fbId).innerHTML=`<div class="feedback-box ok">${d.ok}</div>`;
     scores[qid]=1;
+    document.getElementById(nextId).disabled=false;
   }else{
-    btn.classList.add('wrong');
-    screen.querySelectorAll('.choice').forEach(b=>{if(b.textContent===d.ans)b.classList.add('correct')});
-    document.getElementById(fbId).innerHTML=`<div class="feedback-box ng">${d.ng}</div>`;
+    if(!screen.dataset.wrongCount)screen.dataset.wrongCount='0';
+    if(screen.dataset.wrongCount==='0'){
+      screen.dataset.wrongCount='1';
+      btn.classList.add('wrong');
+      document.getElementById(fbId).innerHTML=`<div class="feedback-box ng">다시 생각해 볼까요? 🌱 문제를 크게 읽어 보세요!</div>`;
+      setTimeout(()=>{btn.classList.remove('wrong');},700);
+    } else {
+      screen.querySelectorAll('.choice').forEach(b=>b.disabled=true);
+      btn.classList.add('wrong');
+      screen.querySelectorAll('.choice').forEach(b=>{if(b.textContent===d.ans)b.classList.add('correct')});
+      document.getElementById(fbId).innerHTML=`<div class="feedback-box ng">정답을 확인해 봐요 😊 소리 내어 한 번 읽어 보면 더 잘 기억나요!</div>`;
+      document.getElementById(nextId).disabled=false;
+    }
   }
-  document.getElementById(nextId).disabled=false;
 }
 
 function checkWriteInput(){
   const val=document.getElementById('s1Input').value.trim();
-  document.getElementById('s1Submit').disabled=val.length<2;
+  const wordEl=document.querySelector('.word-big');
+  const word=wordEl?wordEl.textContent.trim():'';
+  const hasWord=word&&val.includes(word);
+  const ok=hasWord&&val.replace(/\s/g,'').length>=10&&val.trim().split(/\s+/).length>=3;
+  const warnEl=document.getElementById('writeWarn');
+  if(warnEl){
+    if(val.length===0){warnEl.style.display='none';}
+    else if(!ok){warnEl.style.display='block';warnEl.style.background='#fff3e0';warnEl.style.color='#e65100';warnEl.textContent='오늘 배운 단어를 넣어 3단어 + 10글자 이상 써 봐요 🌱';}
+    else{warnEl.style.display='block';warnEl.style.background='#e8f5e9';warnEl.style.color='#2e7d32';warnEl.textContent='좋아요! 제출할 수 있어요 😊';}
+  }
+  document.getElementById('s1Submit').disabled=!ok;
 }
 
 function showResult(){
@@ -232,13 +252,11 @@ function showResult(){
   updateSteps(5);window.scrollTo(0,0);
 
   const qScore=scores.q1+scores.q2+scores.q3;
-  const pct=Math.round((qScore/3)*100);
-  const msg=pct===100?'완벽해요! 🌟':pct>=66?'잘했어요! 👍':'조금 더 연습해요 💪';
 
   document.getElementById('resultContent').innerHTML=`
     <div class="result-hero">
-      <div class="result-pct">${pct}<span>%</span></div>
-      <div class="result-msg">${msg}</div>
+      <div class="result-msg">잘했어요! 오늘 어휘 미션 완료! 🌱</div>
+      <div class="result-msg" style="font-size:14px;color:#aaa;margin-top:6px;">틀린 문제를 다시 생각해 본 것도 공부예요 😊</div>
     </div>
     <div class="result-grid">
       <div class="result-box"><div class="result-num" style="color:#4CAF50">${qScore}/3</div><div class="result-label">개념·활용</div></div>
