@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>초4 국어 어휘 Vol.2 DAY 3 QR 학습</title>
+<style>*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Apple SD Gothic Neo','Noto Sans KR',sans-serif;background:#f7f6f3;color:#1a1a1a;min-height:100vh}
+.app{max-width:440px;margin:0 auto;padding:0 0 60px}
+.hero{background:#1a1a1a;color:#fff;padding:28px 20px 24px;text-align:center}
+.hero-badge{display:inline-block;background:#7c6fcd;color:#fff;font-size:11px;font-weight:700;padding:4px 12px;border-radius:20px;margin-bottom:12px;letter-spacing:.5px}
+.hero h1{font-size:20px;font-weight:700;line-height:1.4;margin-bottom:6px}
+.hero p{font-size:12px;color:#aaa;line-height:1.6}
+.steps{display:flex;align-items:center;justify-content:center;padding:20px 20px 0}
+.step-item{display:flex;flex-direction:column;align-items:center;gap:4px;flex:1}
+.step-circle{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;border:2px solid #ebebeb;background:#fff;color:#ccc;transition:all .3s}
+.step-circle.active{background:#1a1a1a;color:#fff;border-color:#1a1a1a}
+.step-circle.done{background:#7c6fcd;color:#fff;border-color:#7c6fcd}
+.step-label{font-size:9px;color:#999;font-weight:500;text-align:center}
+.step-line{height:2px;flex:1;background:#ebebeb;margin-bottom:20px}
+.step-line.done{background:#7c6fcd}
+.screen{display:none}.screen.active{display:block}
+.card-wrap{padding:20px}
+.q-card{background:#fff;border-radius:16px;padding:20px;border:1px solid #ebebeb;margin-bottom:14px}
+.q-num{font-size:11px;font-weight:700;color:#888;margin-bottom:8px;letter-spacing:.5px}
+.q-badge{display:inline-block;font-size:10px;padding:2px 8px;border-radius:10px;margin-bottom:10px;font-weight:600}
+.q-badge.situation{background:#ede9fe;color:#4c3d99}
+.q-badge.fill-b{background:#e8f5e9;color:#2e7d32}
+.q-badge.dialog{background:#e8f0fe;color:#1a56db}
+.q-badge.orderb{background:#fff3e0;color:#e65100}
+.q-text{font-size:15px;font-weight:600;line-height:1.7;margin-bottom:16px;white-space:pre-line}
+.scenario-box{background:#f7f6f3;border-radius:10px;padding:14px;margin-bottom:12px;font-size:14px;line-height:1.8;color:#333}
+.scenario-box .sp{font-weight:700;color:#4c3d99}
+.scenario-target{font-size:13px;color:#555;margin-bottom:12px;padding:8px 12px;background:#ede9fe;border-radius:8px;line-height:1.6}
+.choices{display:flex;flex-direction:column;gap:8px}
+.choice{padding:12px 16px;border-radius:10px;border:1.5px solid #ebebeb;font-size:14px;cursor:pointer;background:#fff;text-align:left;transition:all .15s;line-height:1.5}
+.choice:hover:not(:disabled){border-color:#7c6fcd;background:#f7f6f3}
+.choice.correct{border-color:#7c6fcd;background:#ede9fe;color:#3c2f8a;font-weight:600}
+.choice.wrong{border-color:#e02424;background:#fff5f5;color:#e02424}
+.fbbox{margin-top:12px;padding:12px 14px;border-radius:10px;font-size:13px;line-height:1.6}
+.fbbox.ok{background:#ede9fe;color:#3c2f8a}
+.fbbox.ng{background:#fff5f5;color:#e02424}
+.fill-row{display:flex;gap:8px;align-items:center;margin-bottom:4px}
+.fill-input{flex:1;border:1.5px solid #ebebeb;border-radius:8px;padding:10px 12px;font-size:15px;font-family:inherit;outline:none;color:#222;background:#f7f6f3;transition:border .15s}
+.fill-input:focus{border-color:#7c6fcd;background:#fff}
+.fill-input.correct{border-color:#7c6fcd;background:#ede9fe;color:#3c2f8a}
+.fill-input.wrong{border-color:#e02424;background:#fff5f5;color:#e02424}
+.olist{list-style:none;display:flex;flex-direction:column;gap:8px;margin-bottom:8px}
+.oitem{background:#fff;border:1.5px solid #ebebeb;border-radius:10px;padding:10px 14px;font-size:14px;color:#333;cursor:grab;display:flex;align-items:flex-start;gap:8px;line-height:1.6;transition:border-color .15s;user-select:none}
+.oitem.dragging{opacity:.4;border-color:#7c6fcd}
+.oitem.over{border-color:#7c6fcd;background:#ede9fe}
+.oitem:active{cursor:grabbing}
+.dh{color:#ccc;font-size:16px;padding-top:1px;flex-shrink:0}
+.on{font-weight:700;color:#7c6fcd;flex-shrink:0;min-width:22px}
+.write-card{background:#fff;border-radius:16px;padding:20px;border:1px solid #ebebeb;margin-bottom:14px}
+.wmission{background:#ede9fe;border-radius:10px;padding:12px 14px;margin-bottom:16px}
+.wmission .ml{font-size:10px;font-weight:700;color:#4c3d99;letter-spacing:.5px;margin-bottom:4px}
+.wmission .mt{font-size:13px;color:#3c2f8a;line-height:1.6}
+.wbig{font-size:26px;font-weight:700;text-align:center;margin-bottom:4px}
+.whint{font-size:12px;color:#888;text-align:center;margin-bottom:4px}
+.wex{font-size:13px;color:#4c3d99;text-align:center;background:#ede9fe;border-radius:8px;padding:8px 12px;margin-bottom:16px;line-height:1.6}
+.winput{width:100%;padding:14px;border-radius:10px;border:1.5px solid #ebebeb;font-size:14px;font-family:inherit;resize:none;outline:none;transition:border .15s;line-height:1.6;background:#f7f6f3}
+.winput:focus{border-color:#7c6fcd;background:#fff}
+.sdone{background:#ede9fe;border:1.5px solid #7c6fcd;border-radius:14px;padding:20px;text-align:center;margin-top:12px}
+.sdone .de{font-size:36px;margin-bottom:8px}
+.sdone .dt{font-size:16px;font-weight:700;color:#3c2f8a;margin-bottom:6px}
+.sdone .ds{font-size:13px;color:#555;line-height:1.7;margin-bottom:16px}
+.kakao-chat-btn{display:block;width:100%;padding:14px;border-radius:12px;background:#FEE500;color:#1a1a1a;font-size:15px;font-weight:700;text-align:center;text-decoration:none;border:none;cursor:pointer;margin-bottom:8px}
+.result-hero{background:#1a1a1a;color:#fff;border-radius:20px;padding:28px 20px;margin-bottom:16px;text-align:center}
+.result-msg{font-size:14px;color:#aaa;margin-bottom:4px}
+.rgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px}
+.rbox{background:#fff;border-radius:14px;padding:14px;border:1px solid #ebebeb;text-align:center}
+.rnum{font-size:20px;font-weight:700;margin-bottom:4px}
+.rlabel{font-size:10px;color:#888}
+.kpromo{background:#3c2f8a;border-radius:16px;padding:24px 20px;margin-bottom:16px;text-align:center}
+.kpromo .ke{font-size:32px;margin-bottom:12px}
+.kpromo h3{font-size:17px;font-weight:700;color:#fff;margin-bottom:10px;line-height:1.5}
+.kpromo p{font-size:13px;color:#c9c2f0;line-height:1.8;margin-bottom:18px}
+.kakao-btn{display:block;width:100%;padding:16px;border-radius:12px;background:#c4b8f8;color:#26215c;font-size:15px;font-weight:700;text-align:center;text-decoration:none;border:none;cursor:pointer}
+.btn-primary{width:100%;padding:16px;border-radius:14px;background:#1a1a1a;color:#fff;font-size:15px;font-weight:600;border:none;cursor:pointer;margin-bottom:10px;transition:opacity .15s}
+.btn-primary:hover{opacity:.85}
+.btn-primary:disabled{opacity:.35;cursor:not-allowed}
+.cbtn{padding:10px 16px;border-radius:8px;background:#7c6fcd;color:#fff;font-size:14px;font-weight:700;border:none;cursor:pointer;white-space:nowrap;transition:opacity .15s}
+.cbtn:hover{opacity:.85}
+.cbtn:disabled{opacity:.35;cursor:not-allowed}
+.nav-info{font-size:12px;color:#999;text-align:center;margin-bottom:8px}
+.warn-msg{display:none;margin-top:8px;padding:10px 14px;background:#fff3e0;border-radius:10px;font-size:13px;color:#e65100}</style>
+</head>
+<body>
+<div class="app">
+<div class="hero">
+  <div class="hero-badge">📚 Vol.2 DAY 3 QR 학습</div>
+  <h1>용기·인정·지레짐작·불편하다</h1>
+  <p>상황 이해 + 활용 + 문장 만들기<br>뜻이 아니라 쓰임으로 익혀요 🌱</p>
+</div>
+<div class="steps"><div class="step-item"><div class="step-circle active" id="sc1">1</div><div class="step-label">상황</div></div><div class="step-line" id="sl1"></div><div class="step-item"><div class="step-circle" id="sc2">2</div><div class="step-label">장면</div></div><div class="step-line" id="sl2"></div><div class="step-item"><div class="step-circle" id="sc3">3</div><div class="step-label">빈칸</div></div><div class="step-line" id="sl3"></div><div class="step-item"><div class="step-circle" id="sc4">4</div><div class="step-label">대화</div></div><div class="step-line" id="sl4"></div><div class="step-item"><div class="step-circle" id="sc5">5</div><div class="step-label">순서</div></div><div class="step-line" id="sl5"></div><div class="step-item"><div class="step-circle" id="sc6">✍️</div><div class="step-label">문장</div></div><div class="step-line" id="sl6"></div><div class="step-item"><div class="step-circle" id="sc7">🎯</div><div class="step-label">결과</div></div></div>
+
+<div id="q1Screen" class="screen active">
+  <div class="card-wrap">
+    <div class="q-card">
+      <div class="q-num">문제 1 / 5</div>
+      <div class="q-badge situation">상황 고르기</div>
+      <div class="q-text">민준이는 발표가 무서웠지만 떨리는 마음으로
+앞에 나가 발표했어요.
+민준이에게 필요했던 것은?</div>
+      
+      <div class="choices"><button class="choice" onclick="cQ(this,'q1',true)">용기</button>
+<button class="choice" onclick="cQ(this,'q1',false)">인정</button>
+<button class="choice" onclick="cQ(this,'q1',false)">지레짐작</button>
+<button class="choice" onclick="cQ(this,'q1',false)">불편하다</button>
+</div>
+      <div id="q1Fb"></div>
+    </div>
+    <div class="nav-info">문제를 풀고 다음으로 넘어가요</div>
+    <button class="btn-primary" id="q1Next" disabled onclick="goStep('q2Screen',2)">다음 문제 →</button>
+  </div>
+</div>
+<div id="q2Screen" class="screen">
+  <div class="card-wrap">
+    <div class="q-card">
+      <div class="q-num">문제 2 / 5</div>
+      <div class="q-badge situation">장면 이해하기</div>
+      <div class="q-text">민준이는 발표가 끝난 뒤 자신의 노력이
+좋은 결과를 만들었다는 것을 알게 되었어요.
+친구들도 민준이의 노력을 알아주었어요.
+이 상황에 알맞은 말은?</div>
+      
+      <div class="choices"><button class="choice" onclick="cQ(this,'q2',false)">용기</button>
+<button class="choice" onclick="cQ(this,'q2',true)">인정</button>
+<button class="choice" onclick="cQ(this,'q2',false)">지레짐작</button>
+<button class="choice" onclick="cQ(this,'q2',false)">불편하다</button>
+</div>
+      <div id="q2Fb"></div>
+    </div>
+    <div class="nav-info">잘하고 있어요! 💪</div>
+    <button class="btn-primary" id="q2Next" disabled onclick="goStep('q3Screen',3)">다음 문제 →</button>
+  </div>
+</div>
+<div id="q3Screen" class="screen">
+  <div class="card-wrap">
+    <div class="q-card">
+      <div class="q-num">문제 3 / 5</div>
+      <div class="q-badge fill-b">빈칸 채우기</div>
+      <div class="q-text">확인하지도 않고 혼자 먼저 그렇게 생각하는 것을
+<span style="display:inline-block;min-width:80px;border-bottom:2px solid #7c6fcd;margin:0 2px;vertical-align:bottom;">&nbsp;</span>(이)라고 해요.</div>
+      <div class="fill-row">
+        <input type="text" class="fill-input" id="q3Inp" placeholder="여기에 써 보세요" />
+        <button class="cbtn" id="q3Cbtn" onclick="cFill('q3','지레짐작','q4Screen',4)">확인</button>
+      </div>
+      <div id="q3Fb"></div>
+    </div>
+    <div class="nav-info">직접 써 봐요 ✏️</div>
+    <button class="btn-primary" id="q3Next" disabled onclick="goStep('q4Screen',4)">다음 문제 →</button>
+  </div>
+</div>
+<div id="q4Screen" class="screen">
+  <div class="card-wrap">
+    <div class="q-card">
+      <div class="q-num">문제 4 / 5</div>
+      <div class="q-badge situation">대화 속 어휘 찾기</div>
+      <div class="q-text">아래 대화를 읽고, 표시된 상황에 알맞은 어휘를 고르세요.</div>
+      <div class="scenario-box"><div><span class="sp">수아:</span> "왜 발표 안 하려고 했어?"</div><div><span class="sp">민준:</span> "어차피 못 할 거라고 먼저 생각했어."</div></div><div class="scenario-target">👉 <b>확인도 하기 전에 혼자 먼저 결론 내린 상황</b></div>
+      <div class="choices"><button class="choice" onclick="cQ(this,'q4',false)">용기</button>
+<button class="choice" onclick="cQ(this,'q4',false)">인정</button>
+<button class="choice" onclick="cQ(this,'q4',true)">지레짐작</button>
+<button class="choice" onclick="cQ(this,'q4',false)">불편하다</button>
+</div>
+      <div id="q4Fb"></div>
+    </div>
+    <div class="nav-info">잘하고 있어요! 💪</div>
+    <button class="btn-primary" id="q4Next" disabled onclick="goStep('q5Screen',5)">다음 문제 →</button>
+  </div>
+</div>
+<div id="q5Screen" class="screen">
+  <div class="card-wrap">
+    <div class="q-card">
+      <div class="q-num">문제 5 / 5</div>
+      <div class="q-badge orderb">순서 맞추기</div>
+      <div class="q-text">아래 문장을 이야기 순서대로 드래그해서 정렬해 보세요.</div>
+      <ul class="olist" id="q5List"><li class="oitem" draggable="true" data-id="1"><span class="dh">⠿</span><span class="on">1.</span><span>못 할 거라고 지레짐작했어요.</span></li>
+<li class="oitem" draggable="true" data-id="3"><span class="dh">⠿</span><span class="on">2.</span><span>생각보다 잘해서 자신의 생각이 틀렸다는 것을 알게 되었어요.</span></li>
+<li class="oitem" draggable="true" data-id="0"><span class="dh">⠿</span><span class="on">3.</span><span>발표가 무섭고 불편했어요.</span></li>
+<li class="oitem" draggable="true" data-id="2"><span class="dh">⠿</span><span class="on">4.</span><span>용기를 내어 발표했어요.</span></li>
+</ul>
+      <div style="text-align:right;margin-bottom:4px">
+        <button class="cbtn" id="q5Cbtn" onclick="cOrder('q5',[0, 1, 2, 3],'s1Screen',6)">순서 확인</button>
+      </div>
+      <div id="q5Fb"></div>
+    </div>
+    <div class="nav-info">드래그해서 순서를 바꿔봐요 🔢</div>
+    <button class="btn-primary" id="q5Next" disabled onclick="goStep('s1Screen',6)">문장 만들기 →</button>
+  </div>
+</div>
+
+<div id="s1Screen" class="screen">
+  <div class="card-wrap">
+    <div class="write-card">
+      <div class="wmission">
+        <div class="ml">✍️ 문장 만들기 미션</div>
+        <div class="mt"><b>용기</b>을(를) 사용해서 나만의 문장을 만들어봐요! 어떤 내용이든 OK 😊</div>
+      </div>
+      <div class="wbig">용기</div>
+      <div class="whint">참고해도 좋아요 👇</div>
+      <div class="wex">예) 발표가 무서웠지만 용기를 내서 손을 들었어요.</div>
+      <textarea class="winput" id="s1Input" rows="4" placeholder="'용기'을 넣어 문장을 써봐요..." oninput="cWrite()"></textarea>
+      <div class="warn-msg" id="warnMsg"></div>
+      <div id="s1Done"></div>
+    </div>
+    <button class="btn-primary" id="s1Submit" disabled onclick="submitW()">제출하기 →</button>
+  </div>
+</div>
+<div id="resultScreen" class="screen"><div class="card-wrap" id="resultContent"></div></div>
+</div>
+<script>
+const KAKAO_URL='https://pf.kakao.com/_sVUKX';
+const WW='용기';
+let scores={q1:0,q2:0,q3:0,q4:0,q5:0};
+let written='';
+const FB={'q1':{ok:'정답이에요! 🎉 어렵거나 무서운 일을 겁내지 않고 해내는 힘을 <b>용기</b>라고 해요.',ng:'다시 생각해 볼까요? 무서운 일을 겁내지 않고 해내는 힘이에요.',ans:'용기'},'q2':{ok:'정답이에요! 🎉 자신의 노력과 결과를 받아들이는 것을 <b>인정</b>이라고 해요.',ng:'다시 생각해 볼까요? 노력의 결과를 스스로 받아들이는 것이에요.',ans:'인정'},'q3':{ok:'정답이에요! 🎉 확인하지 않고 혼자 먼저 생각하는 것을 <b>지레짐작</b>이라고 해요.',ng:'확인도 하기 전에 혼자 먼저 결론을 내리는 것이에요. 다시 써 봐요!',ans:'지레짐작'},'q4':{ok:'정답이에요! 🎉 확인하지 않고 혼자 먼저 그렇게 생각하는 것을 <b>지레짐작</b>이라고 해요.',ng:'다시 생각해 볼까요? 확인도 하기 전에 결론을 내리는 것이에요.',ans:'지레짐작'},'q5':{ok:'정답이에요! 🎉 불편함 → 지레짐작 → 용기 → 인정 순서예요.',ng:'순서를 다시 생각해봐요! 발표 전 불편한 마음부터 시작해봐요.',ans:'[0, 1, 2, 3]'}};
+
+function updateSteps(n){
+  for(let i=1;i<=7;i++){
+    const c=document.getElementById('sc'+i);
+    if(!c)continue;
+    if(i<n){c.className='step-circle done';if(i<7&&![6,7].includes(i))c.textContent='✓';}
+    else if(i===n)c.className='step-circle active';
+    else c.className='step-circle';
+  }
+  for(let i=1;i<=6;i++){
+    const l=document.getElementById('sl'+i);
+    if(l)l.className='step-line'+(i<n?' done':'');
+  }
+}
+function goStep(id,n){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  updateSteps(n);window.scrollTo(0,0);
+}
+function cQ(btn,sid,correct){
+  const wrap=btn.closest('.card-wrap');
+  if(wrap.dataset.locked)return;
+  const d=FB[sid];
+  if(correct){
+    wrap.dataset.locked='1';
+    wrap.querySelectorAll('.choice').forEach(b=>b.disabled=true);
+    btn.classList.add('correct');
+    document.getElementById(sid+'Fb').innerHTML='<div class="fbbox ok">'+d.ok+'</div>';
+    scores[sid]=1;
+    document.getElementById(sid+'Next').disabled=false;
+  }else{
+    if(!wrap.dataset.wrong)wrap.dataset.wrong='0';
+    if(wrap.dataset.wrong==='0'){
+      wrap.dataset.wrong='1';btn.classList.add('wrong');
+      document.getElementById(sid+'Fb').innerHTML='<div class="fbbox ng">다시 생각해 볼까요? 🌱 문제를 크게 읽어 보세요!</div>';
+      setTimeout(()=>btn.classList.remove('wrong'),700);
+    }else{
+      wrap.dataset.locked='1';
+      wrap.querySelectorAll('.choice').forEach(b=>b.disabled=true);
+      btn.classList.add('wrong');
+      wrap.querySelectorAll('.choice').forEach(b=>{if(b.textContent.trim()===d.ans)b.classList.add('correct');});
+      document.getElementById(sid+'Fb').innerHTML='<div class="fbbox ng">정답을 확인해 봐요 😊 소리 내어 한 번 읽어 보면 더 잘 기억나요!</div>';
+      document.getElementById(sid+'Next').disabled=false;
+    }
+  }
+}
+function cFill(sid,answer,nxt,nstep){
+  const inp=document.getElementById(sid+'Inp');
+  const ok=inp.value.trim()===answer;
+  inp.disabled=true;
+  document.getElementById(sid+'Cbtn').disabled=true;
+  inp.classList.add(ok?'correct':'wrong');
+  const d=FB[sid];
+  if(ok){
+    document.getElementById(sid+'Fb').innerHTML='<div class="fbbox ok">'+d.ok+'</div>';
+    scores[sid]=1;
+    document.getElementById(sid+'Next').disabled=false;
+  }else{
+    document.getElementById(sid+'Fb').innerHTML='<div class="fbbox ng">'+d.ng+'</div>';
+    setTimeout(()=>{inp.classList.remove('wrong');inp.value='';inp.disabled=false;document.getElementById(sid+'Cbtn').disabled=false;document.getElementById(sid+'Fb').innerHTML='';},1200);
+  }
+}
+let dragSrc=null;
+function initDrag(listId){
+  const list=document.getElementById(listId);
+  if(!list)return;
+  list.querySelectorAll('.oitem').forEach(item=>{
+    item.addEventListener('dragstart',()=>{dragSrc=item;item.classList.add('dragging');});
+    item.addEventListener('dragend',()=>{item.classList.remove('dragging');list.querySelectorAll('.oitem').forEach(i=>i.classList.remove('over'));renum(listId);});
+    item.addEventListener('dragover',e=>{e.preventDefault();if(item!==dragSrc)item.classList.add('over');});
+    item.addEventListener('dragleave',()=>item.classList.remove('over'));
+    item.addEventListener('drop',e=>{
+      e.preventDefault();
+      if(item!==dragSrc){
+        const all=Array.from(list.querySelectorAll('.oitem'));
+        const si=all.indexOf(dragSrc),di=all.indexOf(item);
+        if(si<di)list.insertBefore(dragSrc,item.nextSibling);
+        else list.insertBefore(dragSrc,item);
+      }
+      item.classList.remove('over');
+    });
+  });
+}
+function renum(listId){
+  document.getElementById(listId).querySelectorAll('.oitem').forEach((el,i)=>{el.querySelectorAll('span')[1].textContent=(i+1)+'.';});
+}
+function cOrder(sid,answer,nxt,nstep){
+  const list=document.getElementById(sid+'List');
+  const items=Array.from(list.querySelectorAll('.oitem'));
+  const user=items.map(el=>parseInt(el.dataset.id));
+  const ok=JSON.stringify(user)===JSON.stringify(answer);
+  document.getElementById(sid+'Cbtn').disabled=true;
+  items.forEach(el=>{el.draggable=false;el.style.cursor='default';});
+  const d=FB[sid];
+  if(ok){
+    document.getElementById(sid+'Fb').innerHTML='<div class="fbbox ok">'+d.ok+'</div>';
+    scores[sid]=1;
+    document.getElementById(sid+'Next').disabled=false;
+  }else{
+    document.getElementById(sid+'Fb').innerHTML='<div class="fbbox ng">'+d.ng+'</div>';
+    setTimeout(()=>{items.forEach(el=>{el.draggable=true;el.style.cursor='grab';});document.getElementById(sid+'Cbtn').disabled=false;document.getElementById(sid+'Fb').innerHTML='';},1200);
+  }
+}
+function cWrite(){
+  const val=document.getElementById('s1Input').value.trim();
+  written=val;
+  const ok=val.includes(WW)&&val.replace(/\s/g,'').length>=10&&val.trim().split(/\s+/).length>=3;
+  const w=document.getElementById('warnMsg');
+  if(!val.length){w.style.display='none';}
+  else if(!ok){w.style.display='block';w.style.background='#fff3e0';w.style.color='#e65100';w.textContent="'"+WW+"'을 넣어 3단어+10글자 이상 써 봐요 🌱";}
+  else{w.style.display='block';w.style.background='#ede9fe';w.style.color='#3c2f8a';w.textContent='좋아요! 제출할 수 있어요 😊';}
+  document.getElementById('s1Submit').disabled=!ok;
+}
+function submitW(){
+  const s=document.getElementById('s1Input').value.trim();
+  if(!s)return;
+  written=s;
+  document.getElementById('s1Input').disabled=true;
+  document.getElementById('s1Submit').style.display='none';
+  document.getElementById('s1Done').innerHTML='<div class="sdone"><div class="de">🌟</div><div class="dt">잘했어요!</div><div class="ds">🌱 오늘 만든 문장을 캡처해서 카카오 채널로 보내 주세요.<br>런칭 기간 동안 선착순 5회 피드백을 드립니다.</div><a class="kakao-chat-btn" href="'+KAKAO_URL+'" target="_blank">📲 카카오채널 가기</a></div>';
+  setTimeout(showResult,300);
+}
+function showResult(){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById('resultScreen').classList.add('active');
+  updateSteps(7);window.scrollTo(0,0);
+  const total=scores.q1+scores.q2+scores.q3+scores.q4+scores.q5;
+  document.getElementById('resultContent').innerHTML=
+    '<div class="result-hero"><div class="result-msg">잘했어요! 오늘 어휘 미션 완료! 🌱</div><div class="result-msg" style="font-size:14px;color:#aaa;margin-top:6px;">틀린 문제를 다시 생각해 본 것도 공부예요 😊</div></div>'+
+    '<div class="rgrid"><div class="rbox"><div class="rnum" style="color:#7c6fcd">'+total+'/5</div><div class="rlabel">선택·빈칸·순서</div></div><div class="rbox"><div class="rnum" style="color:#9b1c7d">✍️</div><div class="rlabel">문장 제출완료</div></div></div>'+
+    '<div style="background:#fff;border-radius:14px;padding:20px;margin-bottom:16px;border:1px solid #ebebeb"><div style="font-size:13px;color:#999;margin-bottom:10px;">✍️ 내가 만든 문장</div><div style="font-size:17px;font-weight:600;color:#1a1a1a;">'+written+'</div></div>'+
+    '<div class="sdone" style="margin-bottom:16px"><div class="de">💬</div><div class="dt">선생님 피드백 받기</div><div class="ds">🌱 오늘 만든 문장을 캡처해서 카카오 채널로 보내 주세요.<br>런칭 기간 동안 선착순 5회 피드백을 드립니다.</div><a class="kakao-chat-btn" href="'+KAKAO_URL+'" target="_blank">📲 카카오채널 가기</a></div>'+
+    '<div class="kpromo"><div class="ke">🌱</div><h3>오늘도 잘했어요! 🌱</h3><p>Vol.3 4학년 2학기 독해 어휘편 &amp; 어휘 앱 곧 출시 예정!<br>카카오채널 추가하고 소식 받아보세요</p><a class="kakao-btn" href="'+KAKAO_URL+'" target="_blank">📲 카카오채널 추가하기</a></div>'+
+    '<button class="btn-primary" onclick="location.reload()">다시 도전하기 🔄</button>';
+}
+initDrag('q5List');
+updateSteps(1);</script>
+</body>
+</html>
